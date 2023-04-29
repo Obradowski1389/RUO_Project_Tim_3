@@ -24,13 +24,15 @@ export class SignUpComponent {
     name: new FormControl('', [Validators.required]),
     surname: new FormControl('', [Validators.required]),
     username: new FormControl('', [Validators.required]),
-    birthday: new FormControl('', [Validators.required]),
+    birthday: new FormControl(null, [Validators.required]),
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required])
   });
 
-  constructor(private router: Router, private cognitoService: CognitoService) {
+  maxDate: Date = new Date();
 
+  constructor(private router: Router, private cognitoService: CognitoService) {
+    this.maxDate = new Date();
   }
   public ngOnInit() {
     // this.user.email = 'isomidobradovic@gmail.com';
@@ -44,7 +46,10 @@ export class SignUpComponent {
     let form = this.signUpForm.value;
     this.user.email = form.email!;
     this.user.name = form.name!;
-    this.user.
+    this.user.surname = form.surname!;
+    this.user.birthday = form.birthday!;
+    this.user.password = form.password!;
+    this.user.username = form.username!;
 
     this.cognitoService.signUp(this.user).then(()=>{
 // Acc created
