@@ -35,9 +35,9 @@ export class SignUpComponent {
     this.maxDate = new Date();
   }
   public ngOnInit() {
-    // this.user.email = 'isomidobradovic@gmail.com';
+    // this.user.email = 'danicagazdic+test@gmail.com';
     // this.user.password = "Test$1234";
-    // this.user.code = '923717';
+    // this.user.code = '092720';
     // this.confirmSignUp();
   }
 
