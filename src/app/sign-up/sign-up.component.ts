@@ -6,7 +6,7 @@ import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormControl,
+  FormControl
 } from '@angular/forms';
 
 @Component({
@@ -23,7 +23,8 @@ export class SignUpComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     name: new FormControl('', [Validators.required]),
     surname: new FormControl('', [Validators.required]),
-    telephoneNumber: new FormControl('', [Validators.required, Validators.pattern("^(\\+381)?(0)?6(([0-6]|[8-9])\\d{7}|(77|78)\\d{6}){1}$")]),
+    username: new FormControl('', [Validators.required]),
+    birthday: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required])
   });
@@ -35,20 +36,28 @@ export class SignUpComponent {
     // this.user.email = 'isomidobradovic@gmail.com';
     // this.user.password = "Test$1234";
     // this.user.code = '923717';
-    this.confirmSignUp();
+    // this.confirmSignUp();
   }
 
   public signUp(): void {
+    console.log(this.signUpForm.value);
+    let form = this.signUpForm.value;
+    this.user.email = form.email!;
+    this.user.name = form.name!;
+    this.user.
+
     this.cognitoService.signUp(this.user).then(()=>{
 // Acc created
     }).catch((error)=>{
       alert(error);
     })
+
+
   }
 
   public confirmSignUp(): void {
     this.cognitoService.confirmSignUp(this.user).then(()=>{
-      this.router.navigate(['login']);
+      // this.router.navigate(['login']);
     }).catch((error)=>{
       alert(error);
     })  

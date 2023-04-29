@@ -15,7 +15,7 @@ export class LoginComponent {
 
   public login(): void {
     this.cognitoService.login(this.user).then(()=>{
-      this.router.navigate(['/']);
+      // this.router.navigate(['/']);
     }).catch((error)=>{
       alert(error);
     })
