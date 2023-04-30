@@ -21,12 +21,10 @@ export class LoginComponent {
 
   public login(): void {
     let form = this.loginForm.value;
-    console.log(form);
     this.user.email = form.email!;
     this.user.password = form.password!;
-    console.log(this.user);
     this.cognitoService.login(this.user).then(()=>{
-      // this.router.navigate(['/']);
+      this.router.navigate(['/']);
     }).catch((error)=>{
       alert(error);
     })

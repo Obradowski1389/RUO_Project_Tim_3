@@ -23,7 +23,6 @@ export class ConfirmSignupComponent {
   });
 
   public confirmSignUp(): void {
-    console.log(this.user);
     this.user.email = this.form.value.email!;
     this.user.code = this.form.value.code!;
     this.cognitoService.confirmSignUp(this.user).then(()=>{
