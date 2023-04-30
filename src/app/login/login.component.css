@@ -1,0 +1,41 @@
+#main-view{
+    text-align: center;
+    padding-top: 10px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-input{
+    border-width: 1px !important;
+    width: 400px;
+    border-radius: 10px !important;
+}
+
+.form-input input{
+    width: 100%;
+}
+
+.form-btn{
+    width: 400px;
+    font-weight: 400;
+    font-size: large;
+    padding: 30px;
+}
+
+.bottom-link{
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.bottom-link a{
+    color: #3F51B5;
+    text-decoration: underline;
+    font-weight: bold;
+}

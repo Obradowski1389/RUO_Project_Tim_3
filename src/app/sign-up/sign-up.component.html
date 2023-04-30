@@ -1,0 +1,43 @@
+<div>
+    <div id="main-view">
+        <h1>Create a new account</h1>
+        <form #form="ngForm" class="form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
+            <div class="input-wrapper">
+                <mat-form-field class="form-input-half" style="margin-right: 5px;" appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input  matInput type="text" name="name" formControlName="name"/>
+                </mat-form-field>
+                <mat-form-field class="form-input-half" style="margin-left: 5px;" appearance="outline">
+                    <mat-label>Surname</mat-label>
+                    <input matInput type="text" name="surname" formControlName="surname"/>
+                </mat-form-field>
+            </div>
+            <mat-form-field  class="form-input" appearance="outline">
+                <mat-label>Birth date</mat-label>
+                <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="birthday">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="form-input" appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input  matInput type="text" name="email" formControlName="email"/>
+            </mat-form-field>
+            <mat-form-field class="form-input" appearance="outline">
+                <mat-label>Username</mat-label>
+                <input  matInput type="text" name="username" formControlName="username"/>
+            </mat-form-field>
+            
+            <mat-form-field class="form-input" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" name="password" formControlName="password"/>
+            </mat-form-field>
+            <mat-form-field class="form-input" appearance="outline">
+                <mat-label>Confirm password</mat-label>
+                <input matInput type="password" name="confirmPassword" formControlName="confirmPassword"/>
+            </mat-form-field>
+
+            <button class="form-btn" id="signup-form-btn" color="primary" type="submit" mat-raised-button>Sign up</button>
+        </form>
+    </div>
+    <div class="bottom-link"><p>Already have an account? <a [routerLink]="['/login']">LOG IN</a></p></div>
+</div>

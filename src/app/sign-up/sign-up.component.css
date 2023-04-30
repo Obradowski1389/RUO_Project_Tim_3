@@ -43,7 +43,8 @@ mat-form-field{
 }
 
 .bottom-link a{
-    color: #f57804;
+    color: #3F51B5;
     text-decoration: underline;
+    font-weight: bold;
 }
 
