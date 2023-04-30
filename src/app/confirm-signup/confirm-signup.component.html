@@ -1,0 +1,17 @@
+<div>
+    <div id="main-view">
+        <h1>Enter confirmation code</h1>
+        <form [formGroup]="form" (ngSubmit)="confirmSignUp()">
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input class="form-input" matInput type="email" name="email" formControlName="email">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Confirmation code</mat-label>
+                <input class="form-input" matInput type="text" name="code" formControlName="code">
+            </mat-form-field>
+
+            <button class="form-btn" color="primary" type="submit" mat-raised-button> Confirm </button>
+        </form>
+    </div>
+</div>

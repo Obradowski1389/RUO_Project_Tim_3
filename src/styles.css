@@ -2,3 +2,8 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-mdc-snack-bar-container {
+    --mat-mdc-snack-bar-button-color: white;
+    --mdc-snackbar-container-color: #3F51B5;
+}

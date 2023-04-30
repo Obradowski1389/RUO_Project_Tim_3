@@ -9,13 +9,15 @@ import { ProfileComponent } from './profile/profile.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/environments/material/material.module';
+import { ConfirmSignupComponent } from './confirm-signup/confirm-signup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignUpComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    ConfirmSignupComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +28,6 @@ import { MaterialModule } from 'src/environments/material/material.module';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  exports: [ReactiveFormsModule]
+  exports: [ReactiveFormsModule, MaterialModule]
 })
 export class AppModule { }

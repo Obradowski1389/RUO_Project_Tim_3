@@ -42,7 +42,6 @@ export class SignUpComponent {
   }
 
   public signUp(): void {
-    console.log(this.signUpForm.value);
     let form = this.signUpForm.value;
     this.user.email = form.email!;
     this.user.name = form.name!;
@@ -52,19 +51,12 @@ export class SignUpComponent {
     this.user.username = form.username!;
 
     this.cognitoService.signUp(this.user).then(()=>{
+      this.router.navigate(['confirmSignUp']);
 // Acc created
     }).catch((error)=>{
       alert(error);
     })
 
 
-  }
-
-  public confirmSignUp(): void {
-    this.cognitoService.confirmSignUp(this.user).then(()=>{
-      // this.router.navigate(['login']);
-    }).catch((error)=>{
-      alert(error);
-    })  
   }
 }
