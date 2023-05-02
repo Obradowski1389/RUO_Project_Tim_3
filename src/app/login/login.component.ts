@@ -24,7 +24,8 @@ export class LoginComponent {
     this.user.email = form.email!;
     this.user.password = form.password!;
     this.cognitoService.login(this.user).then(()=>{
-      this.router.navigate(['/']);
+      console.log("123");
+      this.router.navigate(['/filesystem']);
     }).catch((error)=>{
       alert(error);
     })

@@ -10,6 +10,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/environments/material/material.module';
 import { ConfirmSignupComponent } from './confirm-signup/confirm-signup.component';
+import { FileSystemComponent } from './file-system/file-system.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,14 +19,16 @@ import { ConfirmSignupComponent } from './confirm-signup/confirm-signup.componen
     SignUpComponent,
     LoginComponent,
     ProfileComponent,
-    ConfirmSignupComponent
+    ConfirmSignupComponent,
+    FileSystemComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
