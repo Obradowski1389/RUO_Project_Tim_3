@@ -1,42 +1,42 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# FRONT
 
 # Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+/cloud-front/dist
+/cloud-front/tmp
+/cloud-front/out-tsc
+/cloud-front/bazel-out
 
 # Node
-/node_modules
-npm-debug.log
-yarn-error.log
+/cloud-front/node_modules
+/cloud-front/npm-debug.log
+/cloud-front/yarn-error.log
 
 # IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+/cloud-front/.idea/
+/cloud-front/.project
+/cloud-front/.classpath
+/cloud-front/.c9/
+/cloud-front/*.launch
+/cloud-front/.settings/
+/cloud-front/*.sublime-workspace
 
 # Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
+/cloud-front/.vscode/*
+!/cloud-front/.vscode/settings.json
+!/cloud-front/.vscode/tasks.json
+!/cloud-front/.vscode/launch.json
+!/cloud-front/.vscode/extensions.json
+/cloud-front/.history/*git
 
 # Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+/cloud-front/.angular/cache/
+/cloud-front/.sass-cache/
+/cloud-front/connect.lock
+/cloud-front/coverage
+/cloud-front/libpeerconnection.log
+/cloud-front/testem.log
+/cloud-front/typings
 
 # System files
-.DS_Store
-Thumbs.db
+/cloud-front/.DS_Store
+/cloud-front/Thumbs.db
