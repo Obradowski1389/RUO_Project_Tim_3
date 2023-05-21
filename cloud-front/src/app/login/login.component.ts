@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CognitoService } from 'src/cognito.service';
 import { IUser } from 'src/model/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { HelperService } from '../service/helper.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class LoginComponent {
   user: IUser = {} as IUser;
 
-  constructor(private router: Router, private cognitoService: CognitoService) {}
+  constructor(private router: Router, private cognitoService: CognitoService, private helper: HelperService) {
+    this.helper.helloWorld().subscribe({next: (res) => console.log(res)})
+  }
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
