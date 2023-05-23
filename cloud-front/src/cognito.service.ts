@@ -29,8 +29,14 @@ export class CognitoService {
   }
 
   getUser(): Promise<any> {
-    return Auth.currentUserInfo();
+    return Auth.currentAuthenticatedUser()
+      .then((user) => {return user})
+      .catch((error) => {
+        console.log('No user authenticated:', error);
+        return null; 
+      });
   }
+  
 
   updateUser(user: IUser): Promise<any> {
     return Auth.currentUserPoolUser().then((cognitoUser: any)=>{
@@ -39,6 +45,13 @@ export class CognitoService {
   }
 
   signOut(): Promise<any> {
-    return Auth.signOut();
+    localStorage.clear()
+    return Auth.signOut()
   }
+
+  isLoggedIn(): boolean {
+    if (localStorage.getItem('username') != null) return true
+    return false
+  }
+  
 }

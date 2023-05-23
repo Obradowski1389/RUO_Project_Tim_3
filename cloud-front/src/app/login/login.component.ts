@@ -28,8 +28,9 @@ export class LoginComponent {
     let form = this.loginForm.value;
     this.user.email = form.email!;
     this.user.password = form.password!;
-    this.cognitoService.login(this.user).then(()=>{
-      this.router.navigate(['/']);
+    this.cognitoService.login(this.user).then((res)=>{
+      localStorage.setItem('username', res.username)
+      this.router.navigate(['/home']);
     }).catch((error)=>{
       alert(error);
     })
@@ -38,6 +39,10 @@ export class LoginComponent {
   testCreation() {
     const currentDate = new Date();
     const timezoneOffset = new Date().getTimezoneOffset();
+
+    console.log(this.cognitoService.getUser())
+
+    this.cognitoService.signOut()
 
     var file : IFile = {
       name: 'Test3',
@@ -49,6 +54,6 @@ export class LoginComponent {
       description: 'mega test',
       tags: ['bb']
     }
-    this.fileService.create(file).subscribe({next: (res) => console.log(res)})
+    //this.fileService.create(file).subscribe({next: (res) => console.log(res)})
   }
 }
