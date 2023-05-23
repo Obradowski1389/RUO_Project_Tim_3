@@ -9,7 +9,7 @@ export class HelperService {
   constructor(private client: HttpClient) { }
 
   helloWorld() {
-    return this.client.get<string>("https://bbe7mssfxl.execute-api.eu-central-1.amazonaws.com/Prod/hello");
+    return this.client.get<string>("https://x2fsxmrsw8.execute-api.eu-central-1.amazonaws.com/Prod/hello");
   }
   
 }

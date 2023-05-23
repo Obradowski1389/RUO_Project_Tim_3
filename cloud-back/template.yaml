@@ -16,7 +16,6 @@ Globals:
     Timeout: 3
     MemorySize: 128
 
-
 Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -32,17 +31,35 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+  
+  CreateFileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: createFile/
+      Handler: create_file.create
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        CreateFile:
+          Type: Api
+          Properties:
+            Path: /create
+            Method: post
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: FileMetaDataTable
 
-# Outputs:
-#   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-#   # Find out more about other implicit resources you can reference within SAM
-#   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-#   HelloWorldApi:
-#     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-#   HelloWorldFunction:
-#     Description: "Hello World Lambda Function ARN"
-#     Value: !GetAtt HelloWorldFunction.Arn
-#   HelloWorldFunctionIamRole:
-#     Description: "Implicit IAM Role created for Hello World function"
-#     Value: !GetAtt HelloWorldFunctionRole.Arn
+  FileMetaDataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+        TableName: FileMetaDataTable
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
