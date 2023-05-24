@@ -1,25 +1,106 @@
 
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
-
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$CloudProject-primary: mat.define-palette(mat.$indigo-palette);
-$CloudProject-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$md-mcgpalette0: (
+    50 : #f5f7fc,
+    100 : #e7ebf8,
+    200 : #d7def3,
+    300 : #c6d0ee,
+    400 : #bac6ea,
+    500 : #aebce6,
+    600 : #a7b6e3,
+    700 : #9daddf,
+    800 : #94a5db,
+    900 : #8497d5,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #fbfcff,
+    A700 : #e1e8ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+$accent-palette: (
+  50 : #eaebf0,
+  100 : #caceda,
+  200 : #a7aec1,
+  300 : #848da8,
+  400 : #697495,
+  500 : #4f5c82,
+  600 : #48547a,
+  700 : #3f4a6f,
+  800 : #364165,
+  900 : #263052,
+  A100 : #99afff,
+  A200 : #6687ff,
+  A400 : #335fff,
+  A700 : #1a4bff,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #ffffff,
+      500 : #ffffff,
+      600 : #ffffff,
+      700 : #ffffff,
+      800 : #ffffff,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #ffffff,
+      A700 : #ffffff,
+  )
+);
+$warn-palette: (
+  50 : #fdeaea,
+  100 : #facbcb,
+  200 : #f7a9a8,
+  300 : #f48785,
+  400 : #f16d6a,
+  500 : #F55F5B,
+  600 : #ed4c49,
+  700 : #eb4240,
+  800 : #e83937,
+  900 : #e42927,
+  A100 : #ffffff,
+  A200 : #ffeded,
+  A400 : #ffbbba,
+  A700 : #ffa2a1,
+  contrast: (50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
 
-// The warn palette is optional (defaults to red).
-$CloudProject-warn: mat.define-palette(mat.$red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
+$CloudProject-primary: mat.define-palette($md-mcgpalette0, 800);
+$CloudProject-accent: mat.define-palette($accent-palette, 700);
+$CloudProject-warn: mat.define-palette($warn-palette);
 $CloudProject-theme: mat.define-light-theme((
   color: (
     primary: $CloudProject-primary,
@@ -27,9 +108,4 @@ $CloudProject-theme: mat.define-light-theme((
     warn: $CloudProject-warn,
   )
 ));
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 @include mat.all-component-themes($CloudProject-theme);
-

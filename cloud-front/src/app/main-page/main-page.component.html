@@ -1,5 +1,47 @@
-<button 
-    mat-flat-button color="primary" 
-    type="submit" 
-    class="btn" 
-    (click)="logout()">LOGOUT</button>
+<div class="wrapper">
+    <!-- NavBar -->
+    <div class="navbar">
+
+        <div class="title">
+            <mat-icon style="scale: 1.5; margin-right:10px">cloud_queue</mat-icon>
+            <h1 style="font-family: 'Bruno Ace', cursive !important;">DocHub</h1>
+        </div>
+
+        <button class="navbar-button" style="margin-bottom: 5px;" mat-raised-button color="primary" (click)="toggleDiv()">
+            <mat-icon>insert_drive_file</mat-icon>
+            <p>ADD FILE</p>
+        </button>
+
+        <button class="navbar-button" mat-button color="accent" >
+            <mat-icon>folder</mat-icon>
+            <p>ADD FOLDER</p>
+        </button>
+        
+        <button class="navbar-button" mat-button color="accent" >
+          <mat-icon>group</mat-icon>
+          <p>ADD MEMBER</p>
+        </button>
+        
+        <button class="navbar-button" mat-button color="accent" (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <p>LOGOUT</p>
+        </button>
+
+    </div>
+
+    <div class="divider"></div>
+  
+    <div class="main-content">
+
+        <div class="slide-container" [ngClass]="{ 'no-click': !showDiv }">
+            <div class="slide" [ngClass]="{ 'slide-in': showDiv, 'slide-out': !showDiv }">
+              <app-add-modify (buttonClicked)="toggleDiv()"></app-add-modify>
+            </div>
+        </div>
+          
+
+      <div class="overlay" [ngClass]="{ 'overlay-visible': showDiv }"></div>
+
+    </div>
+  </div>
+  

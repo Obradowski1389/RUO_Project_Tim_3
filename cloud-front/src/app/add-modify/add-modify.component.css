@@ -1,0 +1,60 @@
+.test {
+    background-color: #fafafa;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+.title {
+    color: #364165;
+    margin-bottom: 10px;
+}
+
+mat-form-field{
+    width: 100%;
+    margin-bottom: -.5rem;
+}
+
+form {
+    width: 85%;
+}
+
+.chips-list {
+    list-style-type: none;
+    padding: 0;
+}
+  
+.chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(127, 133, 148, 0.4);
+    padding: 4px 8px;
+    border-radius: 16px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+  
+.chip-icon {
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+button {
+    width: 50%;
+    height: 50px !important;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    /* width: 85%; */
+  }
+  

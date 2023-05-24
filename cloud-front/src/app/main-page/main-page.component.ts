@@ -11,6 +11,17 @@ export class MainPageComponent {
 
   constructor(private cognitoService: CognitoService, private router: Router) {}
 
+  showDiv = false;
+
+  toggleDiv() {
+    this.showDiv = !this.showDiv;
+  }
+
+  t() {
+    console.log('javljeno');
+    
+  }
+
   logout() {
     this.cognitoService.signOut()
     this.router.navigate(['/'])

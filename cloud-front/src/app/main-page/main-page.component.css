@@ -1,0 +1,91 @@
+.wrapper {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1px 7fr;
+    background-color: #fefefe;
+}
+  
+.navbar {
+    padding: 1rem;
+    background-color: #fafafa;
+    align-content: center;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    display: flex; 
+    align-items: center; 
+    margin-left:2px
+}
+
+.navbar-button{
+    width: 90%;
+    height: 40px;
+    font-weight: 600;
+}
+
+button mat-icon {
+    scale: 1.2;
+}
+  
+.divider {
+    background-color: #7f8594;
+    opacity: 0.5;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+  
+.main-content {
+    padding: 10px;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease;
+    background-color: rgba(127, 133, 148, 0.5);
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+}
+  
+.overlay-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+  
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 3;
+}
+  
+.slide {
+    width: 26rem;
+    height: 100%;
+    transition: transform 0.5s ease;
+    transform: translateX(-100%);
+}
+  
+.slide-in {
+    transform: translateX(0%);
+}
+  
+.slide-out {
+    transform: translateX(-101%);
+}
+  
+.no-click {
+    pointer-events: none;
+}
+  

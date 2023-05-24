@@ -48,18 +48,25 @@ Resources:
             Method: post
       Policies:
         - DynamoDBWritePolicy:
-            TableName: FileMetaDataTable
+            TableName: FileMetadataTable
+        - S3WritePolicy:
+            BucketName: filee-storage-bucket
 
-  FileMetaDataTable:
+  FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:
-        TableName: FileMetaDataTable
+        TableName: FileMetadataTable
         AttributeDefinitions:
-          - AttributeName: name
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: name
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+
+  FileStorageBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: filee-storage-bucket
