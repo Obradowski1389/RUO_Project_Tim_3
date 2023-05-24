@@ -88,19 +88,26 @@ button mat-icon {
     pointer-events: none;
 }
 
-.file_div {
+.item_div {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-end;
-    background: linear-gradient(45deg, #c6d0ee, #f5f7fc);
     width: 10rem;
     height: 10rem;
     border-radius: 1rem;
     margin: .5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.file_div {
+    background: linear-gradient(45deg, #c6d0ee, #f5f7fc);
   }
+
+.folder_div {
+    background: linear-gradient(45deg, #fae689, #faf1c5);
+}
   
   .top-left {
     position: absolute;
@@ -130,6 +137,11 @@ button mat-icon {
 }
 
 .path{
+    display: flex; 
+    margin: 0; 
+    justify-content: start; 
+    align-items: center;
     margin-left: 2rem;
     margin-bottom: 0;
+    margin-top: 2rem;
 }

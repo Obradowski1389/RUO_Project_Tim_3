@@ -9,8 +9,12 @@ dynamodb = boto3.resource('dynamodb')
 s3 = boto3.client('s3')
 
 def create(event, context):
-    save_in_s3(event)
+    body = json.loads(event['body'])
+    
+    if not body['isFolder']:
+        save_in_s3(event)
     save_in_dynamo(event)
+    
     return {
         "statusCode": 200,
         "headers": {

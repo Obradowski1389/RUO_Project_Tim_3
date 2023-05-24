@@ -1,11 +1,11 @@
 <div class="test">
 
-    <div class="title">
+    <div class="title" *ngIf="isFileMode">
       <mat-icon style="scale: 1.4;">insert_drive_file</mat-icon>
       <h1 style="margin-top: .5rem;">Add File</h1>
     </div>
   
-    <form action="" [formGroup]="fileForm" (ngSubmit)="createFile()">
+    <form *ngIf="isFileMode" action="" [formGroup]="fileForm" (ngSubmit)="createFile()">
   
         <mat-form-field appearance="outline">
             <mat-label>File</mat-label>
@@ -35,6 +35,24 @@
                     <mat-icon class="chip-icon" (click)="removeItem(i)">cancel</mat-icon>
                 </li>
             </ul>
+        </mat-form-field>
+  
+        <div class="button-container">
+            <button class="navbar-button" mat-button color="accent" type="button" (click)="cancel()">CANCEL</button>
+            <button class="navbar-button" mat-raised-button color="primary" type="submit">ADD</button>
+        </div>
+    </form>
+
+    <div class="title" *ngIf="!isFileMode">
+        <mat-icon style="scale: 1.4;">folder</mat-icon>
+        <h1 style="margin-top: .5rem;">Add Folder</h1>
+    </div>
+
+    <form *ngIf="!isFileMode" action="" [formGroup]="folderForm" (ngSubmit)="createFolder()">
+  
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input formControlName="name" type="text" matInput>
         </mat-form-field>
   
         <div class="button-container">

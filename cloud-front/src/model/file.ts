@@ -11,12 +11,12 @@ export interface IFile {
 
 export interface FileCreateDTO {
     name: string
-    type: string
+    type: string | null
     isFolder: boolean
     size: number
-    createDate: Date
-    lastModifyDate: Date
-    description: string
+    createDate: Date | null
+    lastModifyDate: Date | null
+    description: string | null
     tags: string[]
-    file: string
+    file: string | null
 }

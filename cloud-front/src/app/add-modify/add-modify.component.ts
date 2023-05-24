@@ -14,12 +14,17 @@ export class AddModifyComponent {
 
   @Input() currentPath : string | null = ''
   @Output() buttonClicked = new EventEmitter<void>() 
+  isFileMode = false
 
   fileForm = new FormGroup({
     file: new FormControl(''),
     name: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_-]+$/)]),
     description: new FormControl(''),
     tagsInput: new FormControl('')
+  })
+
+  folderForm = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_-]+$/)])
   })
 
   fileName: string = ''
@@ -93,4 +98,31 @@ export class AddModifyComponent {
     this.fileService.create(file).subscribe({next: (res) => console.log(res)})
     this.buttonClicked.emit()
   }
+
+
+  createFolder() {
+    console.log(this.folderForm.valid);
+    
+    if(!this.folderForm.valid) return
+    var formValues = this.folderForm.value;
+
+    console.log('mmmmmmmmm');
+
+    var folder : FileCreateDTO = {
+      name: this.createName(formValues.name != null ? formValues.name : ''),
+      type: null,
+      isFolder: true,
+      size: 0,
+      createDate: null,
+      lastModifyDate: null,
+      description: null,
+      tags: [],
+      file: null
+    }
+    console.log('mmmmmmmmm');
+    
+    this.fileService.create(folder).subscribe({next: (res) => console.log(res)})
+    this.buttonClicked.emit()
+  }
+
 }
