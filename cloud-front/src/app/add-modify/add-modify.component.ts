@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileCreateDTO, IFile } from 'src/model/file';
 import { FileService } from '../service/file.service';
@@ -12,6 +12,7 @@ export class AddModifyComponent {
 
   constructor(private fileService: FileService) {}
 
+  @Input() currentPath : string | null = ''
   @Output() buttonClicked = new EventEmitter<void>() 
 
   fileForm = new FormGroup({
@@ -34,11 +35,7 @@ export class AddModifyComponent {
   convertFileToBase64() {
     if (this.file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        this.fileBase64 = reader.result as string
-        console.log(this.fileBase64);
-        
-      };
+      reader.onloadend = () => { this.fileBase64 = reader.result as string }
       reader.readAsDataURL(this.file)
     }
   }
@@ -65,23 +62,27 @@ export class AddModifyComponent {
   cancel() {
     this.buttonClicked.emit()
   }
+
+  createName(name: string) : string {
+    return this.currentPath + '/' + name
+  } 
   
   createFile() {
     if(!this.fileForm.valid) return
     if(this.fileName == '') {
       alert("File is required!")
       return
-    }
+    }    
     
     var formValues = this.fileForm.value;
     const currentDate = new Date();
     const timezoneOffset = new Date().getTimezoneOffset();
 
     var file : FileCreateDTO = {
-      name: formValues.name != null ? formValues.name : '',
+      name: this.createName(formValues.name != null ? formValues.name : ''),
       type: this.fileName.split('.')[1],
       isFolder: false,
-      size: 0,
+      size: this.file.size,
       createDate: new Date(currentDate.getTime() - timezoneOffset * 60000),
       lastModifyDate: new Date(currentDate.getTime() - timezoneOffset * 60000),
       description: formValues.description != null ? formValues.description : '',

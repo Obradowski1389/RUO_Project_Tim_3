@@ -12,8 +12,9 @@ export class MainPageComponent {
   constructor(private cognitoService: CognitoService, private router: Router) {}
 
   showDiv = false;
+  currentPath : string | null = localStorage.getItem('username') != null ? localStorage.getItem('username') : ''
 
-  toggleDiv() {
+  toggleDiv(): void {
     this.showDiv = !this.showDiv;
   }
 

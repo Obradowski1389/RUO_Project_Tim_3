@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { CognitoService } from 'src/cognito.service';
 import { IUser } from 'src/model/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HelperService } from '../service/helper.service';
 import { FileService } from '../service/file.service';
 import { IFile } from 'src/model/file';
 
@@ -15,9 +14,7 @@ import { IFile } from 'src/model/file';
 export class LoginComponent {
   user: IUser = {} as IUser;
 
-  constructor(private router: Router, private cognitoService: CognitoService, private helper: HelperService, private fileService: FileService) {
-    this.helper.helloWorld().subscribe({next: (res) => console.log(res)})
-  }
+  constructor(private router: Router, private cognitoService: CognitoService, private fileService: FileService) {}
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
@@ -34,26 +31,5 @@ export class LoginComponent {
     }).catch((error)=>{
       alert(error);
     })
-  }
-
-  testCreation() {
-    const currentDate = new Date();
-    const timezoneOffset = new Date().getTimezoneOffset();
-
-    console.log(this.cognitoService.getUser())
-
-    this.cognitoService.signOut()
-
-    var file : IFile = {
-      name: 'Test3',
-      type: 'txt',
-      isFolder: true,
-      size: 200,
-      createDate: new Date(currentDate.getTime() - timezoneOffset * 60000),
-      lastModifyDate: new Date(currentDate.getTime() - timezoneOffset * 60000),
-      description: 'mega test',
-      tags: ['bb']
-    }
-    //this.fileService.create(file).subscribe({next: (res) => console.log(res)})
   }
 }
