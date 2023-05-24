@@ -13,4 +13,8 @@ export class FileService {
   create(file: FileCreateDTO) {
     return this.client.post<any>(environment.host + 'create', file)
   }
+
+  getAll(username: string) {
+    return this.client.get<any>(environment.host + username)
+  }
 }

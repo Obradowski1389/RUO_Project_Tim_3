@@ -38,7 +38,6 @@ button mat-icon {
 }
   
 .main-content {
-    padding: 10px;
     position: relative;
 }
 
@@ -88,4 +87,49 @@ button mat-icon {
 .no-click {
     pointer-events: none;
 }
+
+.file_div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    background: linear-gradient(45deg, #c6d0ee, #f5f7fc);
+    width: 10rem;
+    height: 10rem;
+    border-radius: 1rem;
+    margin: .5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
   
+  .top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 12px;
+  }
+  
+  .top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .bottom {
+    margin-top: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 3px;
+  }
+
+.test{
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 7px;
+}
+
+.path{
+    margin-left: 2rem;
+    margin-bottom: 0;
+}

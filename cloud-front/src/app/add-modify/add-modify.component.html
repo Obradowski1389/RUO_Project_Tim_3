@@ -30,10 +30,10 @@
             <mat-label>Tags</mat-label>
             <input formControlName="tagsInput" (keydown.enter)="addItem($event)" matInput placeholder="Press Enter to add">
             <ul class="chips-list">
-            <li *ngFor="let item of tags; let i = index" class="chip">
-                {{ item }}
-                <mat-icon class="chip-icon" (click)="removeItem(i)">cancel</mat-icon>
-            </li>
+                <li *ngFor="let item of tags; let i = index" class="chip">
+                    {{ item }}
+                    <mat-icon class="chip-icon" (click)="removeItem(i)">cancel</mat-icon>
+                </li>
             </ul>
         </mat-form-field>
   

@@ -38,6 +38,24 @@ Resources:
         - S3WritePolicy:
             BucketName: filee-storage-bucket
 
+  GetAllFilesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getAllFiles/
+      Handler: get_all.get_all_for_user
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        GetAllFiles:
+          Type: Api
+          Properties:
+            Path: /{username}
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: FileMetadataTable
+
   FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:
