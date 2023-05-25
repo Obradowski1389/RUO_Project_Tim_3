@@ -21,4 +21,8 @@ export class FileService {
   move(file: FileMoveDTO) {
     return this.client.put<any>(environment.host + 'move', file)
   }
+
+  delete(id: string, name: string) {
+    return this.client.put<any>(environment.host + 'delete', {'id' : id, 'name' : name} )
+  }
 }

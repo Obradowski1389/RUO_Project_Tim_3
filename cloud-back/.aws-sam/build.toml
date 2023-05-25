@@ -28,4 +28,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["MoveFileFunction"]
 
+[function_build_definitions.eb439af0-0b01-408f-9933-a29f0372e2b3]
+codeuri = "C:\\SIIT\\RO\\RUO_Project_Tim_3\\cloud-back\\deleteFile"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "delete_file.delete_one_file"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["DeleteOneFileFunction"]
+
 [layer_build_definitions]

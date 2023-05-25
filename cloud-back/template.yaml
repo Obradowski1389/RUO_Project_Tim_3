@@ -78,6 +78,26 @@ Resources:
         - S3FullAccessPolicy:
             BucketName: filee-storage-bucket
 
+  DeleteOneFileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: deleteFile/
+      Handler: delete_file.delete_one_file
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        DeleteOneFileFunction:
+          Type: Api
+          Properties:
+            Path: /delete
+            Method: put
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: FileMetadataTable
+        - S3FullAccessPolicy:
+            BucketName: filee-storage-bucket
+
   FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:

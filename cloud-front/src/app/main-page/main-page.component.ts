@@ -133,6 +133,15 @@ export class MainPageComponent {
       }
     });
   }
+
+  delete(file: IFile) {
+    this.fileService.delete(file.id, file.name).subscribe((res) => { 
+      console.log(res) 
+      const index = this.allDocs.indexOf(file)
+      if (index !== -1)  this.allDocs.splice(index, 1)
+      this.pathFileterList()
+    })
+  }
 }
 
 @Component({
