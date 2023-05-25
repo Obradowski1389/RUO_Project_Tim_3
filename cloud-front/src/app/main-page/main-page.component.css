@@ -108,6 +108,11 @@ button mat-icon {
 .folder_div {
     background: linear-gradient(45deg, #fae689, #faf1c5);
 }
+
+.folder_div:hover {
+    scale: 1.015;
+    cursor: pointer;
+}
   
   .top-left {
     position: absolute;
@@ -134,6 +139,7 @@ button mat-icon {
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 7px;
+    cursor: default;
 }
 
 .path{

@@ -12,9 +12,14 @@ import { IFile } from 'src/model/file';
 export class MainPageComponent {
 
   allDocs : IFile[] = []
+  filteredDocs : IFile[] = []
+  isBackButtonDisabled = true
 
   constructor(private cognitoService: CognitoService, private router: Router, fileService: FileService) {
-    fileService.getAll(this.currentPath).subscribe((res) => { this.allDocs = this.sortedList(res)})
+    fileService.getAll(this.currentPath).subscribe((res) => { 
+      this.allDocs = this.sortedList(res)
+      this.pathFileterList()
+    })
   }
 
   getName(file: IFile) {
@@ -24,10 +29,24 @@ export class MainPageComponent {
   }
 
   showDiv = false
-  currentPath : string = localStorage.getItem('username') ?? ''
+  currentPath : string = (localStorage.getItem('username') ?? '') + "/"
+  isFileMode = true
 
-  toggleDiv(): void {
-    this.showDiv = !this.showDiv;
+  toggleDiv(isFile: boolean): void {
+    this.showDiv = true
+    if(isFile) this.isFileMode = true
+    else this.isFileMode = false
+  }
+
+  pathFileterList() {
+    this.filteredDocs = []
+    for(var i = 0; i < this.allDocs.length; i++) {
+      var currDoc : IFile = this.allDocs[i];
+      if(currDoc.name.startsWith(this.currentPath)){
+        var parts = currDoc.name.replace(this.currentPath, '').split('/')
+        if(parts.length == 1) this.filteredDocs.push(currDoc)
+      }
+    }
   }
 
   sortedList(docs: IFile[]) {
@@ -46,11 +65,26 @@ export class MainPageComponent {
     });
   }
 
-  getForrmatedCyrrentPath() {
+  openFolder(file: IFile) {
+    this.currentPath = file.name + '/'
+    this.pathFileterList()
+    this.isBackButtonDisabled = false
+  }
+
+  closeFolder() {
+    var parts = this.currentPath.split('/')
+    var newPath : string = ''
+    for(var i = 0; i < parts.length - 2; i++) newPath += parts[i] + '/'
+    this.currentPath = newPath
+    this.pathFileterList()
+    if(this.currentPath.split('/').length == 2) this.isBackButtonDisabled = true
+  }
+
+  getForrmatedCurrentPath() {
     const parts = this.currentPath.split('/')
     var path = 'Root'
     for(var i = 1; i < parts.length; i++) path += ' > ' + parts[i] 
-    return path
+    return path.slice(0, path.length - 2)
   }
 
   logout() {

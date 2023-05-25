@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileCreateDTO, IFile } from 'src/model/file';
 import { FileService } from '../service/file.service';
+import { MainPageComponent } from '../main-page/main-page.component';
 
 @Component({
   selector: 'app-add-modify',
@@ -13,8 +14,9 @@ export class AddModifyComponent {
   constructor(private fileService: FileService) {}
 
   @Input() currentPath : string | null = ''
+  @Input() isFileMode : boolean = true
+  @Input() exestedDocs : IFile[] = []
   @Output() buttonClicked = new EventEmitter<void>() 
-  isFileMode = false
 
   fileForm = new FormGroup({
     file: new FormControl(''),
@@ -67,24 +69,26 @@ export class AddModifyComponent {
   cancel() {
     this.buttonClicked.emit()
   }
-
-  createName(name: string) : string {
-    return this.currentPath + '/' + name
-  } 
   
   createFile() {
     if(!this.fileForm.valid) return
+    var formValues = this.fileForm.value
+    var name = this.currentPath + (formValues.name != null ? formValues.name : '')
+
+    if(!this.isNameValid(name)) {
+      alert("File with this name already exist in this directory!")
+      return
+    }
     if(this.fileName == '') {
       alert("File is required!")
       return
     }    
     
-    var formValues = this.fileForm.value;
     const currentDate = new Date();
     const timezoneOffset = new Date().getTimezoneOffset();
 
     var file : FileCreateDTO = {
-      name: this.createName(formValues.name != null ? formValues.name : ''),
+      name: name,
       type: this.fileName.split('.')[1],
       isFolder: false,
       size: this.file.size,
@@ -101,15 +105,17 @@ export class AddModifyComponent {
 
 
   createFolder() {
-    console.log(this.folderForm.valid);
-    
     if(!this.folderForm.valid) return
     var formValues = this.folderForm.value;
+    var name = this.currentPath + (formValues.name != null ? formValues.name : '')
 
-    console.log('mmmmmmmmm');
+    if(!this.isNameValid(name)) {
+      alert("Folder with this name already exist in this directory!")
+      return
+    }
 
     var folder : FileCreateDTO = {
-      name: this.createName(formValues.name != null ? formValues.name : ''),
+      name: this.currentPath + (formValues.name != null ? formValues.name : ''),
       type: null,
       isFolder: true,
       size: 0,
@@ -119,10 +125,13 @@ export class AddModifyComponent {
       tags: [],
       file: null
     }
-    console.log('mmmmmmmmm');
     
     this.fileService.create(folder).subscribe({next: (res) => console.log(res)})
     this.buttonClicked.emit()
+  }
+
+  isNameValid(name: string) {
+    return !this.exestedDocs.some(item => item.name == name);
   }
 
 }
