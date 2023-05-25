@@ -1,4 +1,5 @@
 export interface IFile {
+    id: string
     name: string
     type: string
     isFolder: boolean
@@ -19,6 +20,11 @@ export interface FileCreateDTO {
     description: string | null
     tags: string[]
     file: string | null
+}
+
+export interface FileMoveDTO {
+    id: string,
+    name: string
 }
 
 export function fromFileCreateDTOToIFile(file: FileCreateDTO): IFile {

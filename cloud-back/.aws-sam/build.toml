@@ -19,4 +19,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["CreateFileFunction"]
 
+[function_build_definitions.952e076a-9051-45ef-9544-86b2fa696755]
+codeuri = "C:\\SIIT\\RO\\RUO_Project_Tim_3\\cloud-back\\moveFile"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "move_file.move"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["MoveFileFunction"]
+
 [layer_build_definitions]

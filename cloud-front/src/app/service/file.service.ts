@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { FileCreateDTO } from 'src/model/file';
+import { FileCreateDTO, FileMoveDTO } from 'src/model/file';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +16,9 @@ export class FileService {
 
   getAll(username: string) {
     return this.client.get<any>(environment.host + username)
+  }
+
+  move(file: FileMoveDTO) {
+    return this.client.put<any>(environment.host + 'move', file)
   }
 }

@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CognitoService } from 'src/cognito.service';
 import { FileService } from '../service/file.service';
-import { IFile } from 'src/model/file';
+import { FileMoveDTO, IFile } from 'src/model/file';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
@@ -16,10 +16,12 @@ export class MainPageComponent {
   filteredDocs : IFile[] = []
   isBackButtonDisabled = true
 
-  constructor(private cognitoService: CognitoService, private router: Router, fileService: FileService, public dialog: MatDialog) {
+  constructor(private cognitoService: CognitoService, private router: Router, private fileService: FileService, public dialog: MatDialog) {
     fileService.getAll(this.currentPath).subscribe((res) => { 
       this.allDocs = this.sortedList(res)
       this.pathFileterList()
+      console.log(this.allDocs);
+      
     })
   }
 
@@ -118,13 +120,19 @@ export class MainPageComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         var parts = file.name.split('/')
-        console.log(result + '/' + parts[parts.length - 1])
+        var fileMove: FileMoveDTO = {id: file.id, name: result + '/' + parts[parts.length - 1]}
+        console.log(fileMove)
+        this.fileService.move(fileMove).subscribe((res) => { 
+          console.log(res)
+          const index = this.allDocs.indexOf(file)
+          if (index !== -1)  this.allDocs.splice(index, 1)
+          file.name = fileMove.name
+          this.allDocs.push(file)
+          this.pathFileterList()
+        })
       }
     });
   }
-  
-  
-
 }
 
 @Component({
