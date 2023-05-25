@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { FileCreateDTO, IFile } from 'src/model/file';
+import { FileCreateDTO, IFile, fromFileCreateDTOToIFile } from 'src/model/file';
 import { FileService } from '../service/file.service';
 import { MainPageComponent } from '../main-page/main-page.component';
 
@@ -17,6 +17,7 @@ export class AddModifyComponent {
   @Input() isFileMode : boolean = true
   @Input() exestedDocs : IFile[] = []
   @Output() buttonClicked = new EventEmitter<void>() 
+  @Output() fileDTO = new EventEmitter<IFile>
 
   fileForm = new FormGroup({
     file: new FormControl(''),
@@ -101,6 +102,7 @@ export class AddModifyComponent {
 
     this.fileService.create(file).subscribe({next: (res) => console.log(res)})
     this.buttonClicked.emit()
+    this.fileDTO.emit(fromFileCreateDTOToIFile(file))
   }
 
 
@@ -128,6 +130,7 @@ export class AddModifyComponent {
     
     this.fileService.create(folder).subscribe({next: (res) => console.log(res)})
     this.buttonClicked.emit()
+    this.fileDTO.emit(fromFileCreateDTOToIFile(folder))
   }
 
   isNameValid(name: string) {

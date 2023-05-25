@@ -37,6 +37,7 @@
             <div class="slide" [ngClass]="{ 'slide-in': showDiv, 'slide-out': !showDiv }">
               <app-add-modify 
               (buttonClicked)="showDiv = false" 
+              (fileDTO)="whenAddedNewDoc($event)"
               [currentPath]="currentPath"
               [isFileMode]="isFileMode"
               [exestedDocs]="filteredDocs"></app-add-modify>

@@ -20,3 +20,16 @@ export interface FileCreateDTO {
     tags: string[]
     file: string | null
 }
+
+export function fromFileCreateDTOToIFile(file: FileCreateDTO): IFile {
+    return {
+        name: file.name,
+        type: file.type,
+        isFolder: file.isFolder,
+        size: file.size,
+        createDate: file.createDate,
+        lastModifyDate: file.lastModifyDate,
+        description: file.description,
+        tags: file.tags
+    } as IFile
+}

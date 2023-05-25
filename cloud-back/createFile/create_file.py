@@ -49,7 +49,7 @@ def save_in_s3(event):
     base64_decoded = base64.b64decode(base64_without_header)
     file_bytes = bytes(base64_decoded)
     s3.put_object(
-        Body=base64_decoded,
+        Body=file_bytes,
         Bucket=bucket_name,
         Key=body['name']
     )

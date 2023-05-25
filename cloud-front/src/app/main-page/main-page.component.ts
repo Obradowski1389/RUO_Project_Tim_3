@@ -91,4 +91,10 @@ export class MainPageComponent {
     this.cognitoService.signOut()
     this.router.navigate(['/'])
   }
+
+  whenAddedNewDoc(item: IFile) {
+    this.allDocs.unshift(item)
+    this.allDocs = this.sortedList(this.allDocs)
+    this.pathFileterList()
+  }
 }
