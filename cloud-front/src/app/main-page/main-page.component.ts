@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CognitoService } from 'src/cognito.service';
 import { FileService } from '../service/file.service';
 import { IFile } from 'src/model/file';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-main-page',
@@ -15,7 +16,7 @@ export class MainPageComponent {
   filteredDocs : IFile[] = []
   isBackButtonDisabled = true
 
-  constructor(private cognitoService: CognitoService, private router: Router, fileService: FileService) {
+  constructor(private cognitoService: CognitoService, private router: Router, fileService: FileService, public dialog: MatDialog) {
     fileService.getAll(this.currentPath).subscribe((res) => { 
       this.allDocs = this.sortedList(res)
       this.pathFileterList()
@@ -51,17 +52,12 @@ export class MainPageComponent {
 
   sortedList(docs: IFile[]) {
     return docs.sort((a, b) => {
-      const dateA = a.lastModifyDate ? new Date(a.lastModifyDate) : null;
-      const dateB = b.lastModifyDate ? new Date(b.lastModifyDate) : null;
-
-      if (dateA && dateB) {
-        return dateB.getTime() - dateA.getTime();
-      } else if (dateA) {
-        return 1;
-      } else if (dateB) {
-        return -1;
-      }
-      return 0;
+      const dateA = a.lastModifyDate ? new Date(a.lastModifyDate) : null
+      const dateB = b.lastModifyDate ? new Date(b.lastModifyDate) : null
+      if (dateA && dateB) return dateB.getTime() - dateA.getTime()
+      else if (dateA) return 1
+      else if (dateB) return -1
+      return 0
     });
   }
 
@@ -96,5 +92,67 @@ export class MainPageComponent {
     this.allDocs.unshift(item)
     this.allDocs = this.sortedList(this.allDocs)
     this.pathFileterList()
+  }
+
+  getAvailableFolders(file: IFile) {
+    var goodDirectories: string[] = [] 
+    for(var i = 0; i < this.allDocs.length; i++) {
+      var currDoc = this.allDocs[i]
+      if(currDoc.isFolder && !this.isNameAlreadyExist(file.name, currDoc.name)) goodDirectories.push(currDoc.name) 
+    }
+    var root: string = localStorage.getItem('username') ?? ''
+    if(!this.isNameAlreadyExist(file.name, root)) goodDirectories.push(root)
+    return goodDirectories
+  }
+
+  isNameAlreadyExist(docName: string, folderName: string) {
+    var fileParts = docName.split('/')
+    var newName = folderName + '/' + fileParts[fileParts.length - 1]
+    for(var i in this.allDocs) if(this.allDocs[i].name == newName) return true
+    return false
+  }
+
+  openMoveDialog(file: IFile): void {
+    const dialogRef = this.dialog.open(MoveDialog, { data: { directories: this.getAvailableFolders(file) } });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        var parts = file.name.split('/')
+        console.log(result + '/' + parts[parts.length - 1])
+      }
+    });
+  }
+  
+  
+
+}
+
+@Component({
+  selector: 'reject-dialog',
+  templateUrl: 'move-dialog.html',
+})
+export class MoveDialog {
+  selectedDirectory: string = ''
+  directories: string[] = []
+
+  constructor(
+    public dialogRef: MatDialogRef<MoveDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+    this.directories = data.directories
+    this.selectedDirectory = data.directories[0]
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close()
+  }
+
+  onYesClick() {
+    this.dialogRef.close(this.selectedDirectory)
+  }
+
+  getFormatedName(name: string) {
+    var root: string = localStorage.getItem('username') ?? ''
+    return name.replace(root, 'Root')
   }
 }

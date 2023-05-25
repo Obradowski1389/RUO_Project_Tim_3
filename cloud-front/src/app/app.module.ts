@@ -12,7 +12,7 @@ import { MaterialModule } from 'src/environments/material/material.module';
 import { ConfirmSignupComponent } from './confirm-signup/confirm-signup.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MainPageComponent } from './main-page/main-page.component';
+import { MainPageComponent, MoveDialog } from './main-page/main-page.component';
 import { AddModifyComponent } from './add-modify/add-modify.component';
 
 @NgModule({
@@ -23,7 +23,8 @@ import { AddModifyComponent } from './add-modify/add-modify.component';
     ProfileComponent,
     ConfirmSignupComponent,
     MainPageComponent,
-    AddModifyComponent
+    AddModifyComponent,
+    MoveDialog
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,45 @@
+<div mat-dialog-content>
+    <p>Move file to:</p>
+    <mat-form-field appearance="outline">
+        <mat-label>Directories</mat-label>
+        <mat-select [(ngModel)]="selectedDirectory">
+          <mat-option *ngFor="let directory of directories" [value]="directory">
+            {{ getFormatedName(directory) }}
+          </mat-option>
+        </mat-select>
+    </mat-form-field> 
+  </div>
+<div class="btn-wrapper" mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">CANCEL</button>
+  <button mat-raised-button color="primary" (click)="onYesClick()">MOVE</button>
+</div>
+
+
+<style>
+    p {
+        text-align: center;
+        color: #364165 ;
+        margin-top: 1rem !important;
+        margin-bottom: 2rem !important; 
+        font-size: 32px;
+        font-weight: 500;
+    }
+    .mat-dialog-title {
+        text-align: center;
+    }
+    p {
+        text-align: center;
+        margin: 0;
+    }
+    mat-form-field {
+        width: 30rem;
+    }
+    .btn-wrapper{
+        justify-content: center;
+        margin-top: -3vh;
+        margin-bottom: 1vh;
+    }
+    button {
+        height: 40px !important;
+      }
+</style>
