@@ -12,7 +12,7 @@ def delete_one_file(event, context):
     if body['isFolder']:
         delete_folder(body)
     else:
-        delete_file(body)
+        delete_file(body['id'], body['name'])
     
     return {
         "statusCode": 200,
@@ -24,29 +24,19 @@ def delete_one_file(event, context):
         }),
     }
     
-def delete_file(body):
-    table = dynamodb.Table(table_name)
-    
-    response = table.delete_item(
-        Key={ 'id': body['id'] }
-    )
-    
-    s3.delete_object(
-        Bucket=bucket_name,
-        Key=body['name']
-    )
+def delete_file(id: str, name: str):
+    dynamodb.Table(table_name).delete_item(Key={ 'id': id })
+    s3.delete_object(Bucket=bucket_name, Key=name)
     
 def delete_folder(body):
+    #find all files
     prefix = body['name']
-    table = dynamodb.Table(table_name)
-    
-    response = table.scan(
+    response = dynamodb.Table(table_name).scan(
         FilterExpression='begins_with(#key, :prefix)',
         ExpressionAttributeNames={'#key': 'name'},
         ExpressionAttributeValues={':prefix': prefix}
     )
-    
+    #delete all files
     items = response['Items']
     for item in items:
-        table.delete_item(Key={ 'id': item['id'] })
-        s3.delete_object(Bucket=bucket_name, Key=item['name'])
+        delete_file(item['id'], item['name'])

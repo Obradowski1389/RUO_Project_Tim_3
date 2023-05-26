@@ -25,21 +25,19 @@ def move(event, context):
     
 def move_in_dynamo(body):
     table = dynamodb.Table(table_name)
-    response = table.get_item(
-        Key={ 'id': body['id'] }
-    )
+    #get file for move
+    response = table.get_item(Key={ 'id': body['id'] })
+    #save neccessary fields
     item = response['Item']
-
     old_name = item['name']
     is_folder = item['isFolder']
-    
+    #move
     item['name'] = body['name']
-    response = table.put_item(
-        Item=item
-    )
+    response = table.put_item(Item=item)
     return old_name, is_folder
 
 def move_in_s3(old_name, body):
+    #make same object with new name
     s3.copy_object(
     Bucket=bucket_name,
     Key=body['name'],
@@ -47,6 +45,7 @@ def move_in_s3(old_name, body):
         'Bucket': bucket_name,
         'Key': old_name
     })
+    #delete old object
     s3.delete_object(
         Bucket=bucket_name,
         Key=old_name

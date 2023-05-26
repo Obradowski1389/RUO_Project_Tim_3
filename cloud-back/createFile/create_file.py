@@ -53,4 +53,3 @@ def save_in_s3(event):
         Bucket=bucket_name,
         Key=body['name']
     )
-    
