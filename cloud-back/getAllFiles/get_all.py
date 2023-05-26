@@ -10,7 +10,7 @@ class DecimalEncoder(json.JSONEncoder):
 
 def get_all_for_user(event, context):
     dynamodb = boto3.resource('dynamodb')
-    table_name = 'FileMetadataTable'
+    table_name = 'metadata-cloud-back'
     prefix = event['pathParameters']['username']
     
     response = dynamodb.Table(table_name).scan(

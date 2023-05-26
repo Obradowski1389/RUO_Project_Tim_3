@@ -34,9 +34,9 @@ Resources:
             Method: post
       Policies:
         - DynamoDBWritePolicy:
-            TableName: FileMetadataTable
+            TableName: metadata-cloud-back
         - S3WritePolicy:
-            BucketName: filee-storage-bucket
+            BucketName: files-cloud-back
 
   GetAllFilesFunction:
     Type: AWS::Serverless::Function
@@ -54,7 +54,7 @@ Resources:
             Method: get
       Policies:
         - DynamoDBReadPolicy:
-            TableName: FileMetadataTable
+            TableName: metadata-cloud-back
 
   MoveFileFunction:
     Type: AWS::Serverless::Function
@@ -72,11 +72,11 @@ Resources:
             Method: put
       Policies:
         - DynamoDBReadPolicy:
-            TableName: FileMetadataTable
+            TableName: metadata-cloud-back
         - DynamoDBWritePolicy:
-            TableName: FileMetadataTable
+            TableName: metadata-cloud-back
         - S3FullAccessPolicy:
-            BucketName: filee-storage-bucket
+            BucketName: files-cloud-back
 
   DeleteOneFileFunction:
     Type: AWS::Serverless::Function
@@ -94,14 +94,14 @@ Resources:
             Method: put
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: FileMetadataTable
+            TableName: metadata-cloud-back
         - S3FullAccessPolicy:
-            BucketName: filee-storage-bucket
+            BucketName: files-cloud-back
 
   FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:
-        TableName: FileMetadataTable
+        TableName: metadata-cloud-back
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
@@ -115,4 +115,4 @@ Resources:
   FileStorageBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: filee-storage-bucket
+      BucketName: files-cloud-back

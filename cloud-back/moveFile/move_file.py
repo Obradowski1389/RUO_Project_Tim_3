@@ -1,8 +1,8 @@
 import boto3
 import json
 
-table_name = 'FileMetadataTable'
-bucket_name = 'filee-storage-bucket'
+table_name = 'metadata-cloud-back'
+bucket_name = 'files-cloud-back'
 dynamodb = boto3.resource('dynamodb')
 s3 = boto3.client('s3')
 
