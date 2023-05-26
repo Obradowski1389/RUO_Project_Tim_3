@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Output, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FileCreateDTO, IFile, fromFileCreateDTOToIFile } from 'src/model/file';
 import { FileService } from '../service/file.service';
-import { MainPageComponent } from '../main-page/main-page.component';
 
 @Component({
   selector: 'app-add-modify',
@@ -19,6 +18,7 @@ export class AddModifyComponent {
   @Output() buttonClicked = new EventEmitter<void>() 
   @Output() fileDTO = new EventEmitter<IFile>
 
+  //forms
   fileForm = new FormGroup({
     file: new FormControl(''),
     name: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_-]+$/)]),
@@ -30,6 +30,7 @@ export class AddModifyComponent {
     name: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_-]+$/)])
   })
 
+  //files
   fileName: string = ''
   file!: File
   fileBase64 : string = ''
@@ -48,27 +49,47 @@ export class AddModifyComponent {
     }
   }
   
+  //tags
+  tags: string[] = []
+  newTag: string = ''
 
-  tags: string[] = [];
-  newTag: string = '';
-
-  addItem(event: Event) {
-    event.preventDefault();
-    const inputValue = (event.target as HTMLInputElement).value;
+  addTag(event: Event) {
+    event.preventDefault()
+    const inputValue = (event.target as HTMLInputElement).value
     if (inputValue.trim() !== '') {
       this.tags.push(inputValue.trim());
-      (event.target as HTMLInputElement).value = '';
+      (event.target as HTMLInputElement).value = ''
     }
   }
   
-  removeItem(index: number): void {
-    if (index >= 0 && index < this.tags.length) {
-      this.tags.splice(index, 1);
-    }
+  removeTag(index: number): void {
+    if (index >= 0 && index < this.tags.length) this.tags.splice(index, 1)
+  }
+
+  clearForms() {
+    this.file
+    this.fileBase64 = ''
+    this.fileName = ''
+    this.fileForm.setValue({
+      name: '',
+      description: '',
+      tagsInput: '',
+      file: ''
+    })
+    this.fileForm.get('name')?.setErrors(null)
+    this.folderForm.setValue({name: ''})
+    this.folderForm.get('name')?.setErrors(null)
+    this.tags = []
+    this.folderForm.value.name = ''
   }
 
   cancel() {
     this.buttonClicked.emit()
+    this.clearForms()
+  }
+
+  isNameValid(name: string) {
+    return !this.exestedDocs.some(item => item.name == name);
   }
   
   createFile() {
@@ -103,8 +124,8 @@ export class AddModifyComponent {
     this.fileService.create(file).subscribe({next: (res) => console.log(res)})
     this.buttonClicked.emit()
     this.fileDTO.emit(fromFileCreateDTOToIFile(file))
+    this.clearForms()
   }
-
 
   createFolder() {
     if(!this.folderForm.valid) return
@@ -131,10 +152,7 @@ export class AddModifyComponent {
     this.fileService.create(folder).subscribe({next: (res) => console.log(res)})
     this.buttonClicked.emit()
     this.fileDTO.emit(fromFileCreateDTOToIFile(folder))
-  }
-
-  isNameValid(name: string) {
-    return !this.exestedDocs.some(item => item.name == name);
+    this.clearForms()
   }
 
 }

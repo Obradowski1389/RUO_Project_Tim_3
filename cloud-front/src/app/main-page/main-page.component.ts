@@ -15,32 +15,18 @@ export class MainPageComponent {
   allDocs : IFile[] = []
   filteredDocs : IFile[] = []
   isBackButtonDisabled = true
+  showDiv = false
+  isFileMode = true
+  currentPath : string = (localStorage.getItem('username') ?? '') + "/"
 
   constructor(private cognitoService: CognitoService, private router: Router, private fileService: FileService, public dialog: MatDialog) {
     fileService.getAll(this.currentPath).subscribe((res) => { 
       this.allDocs = this.sortedList(res)
       this.pathFileterList()
-      console.log(this.allDocs);
-      
     })
   }
 
-  getName(file: IFile) {
-    const parts = file.name.split('/')
-    if (file.isFolder) return parts[parts.length - 1]
-    return parts[parts.length - 1] + '.' + file.type
-  }
-
-  showDiv = false
-  currentPath : string = (localStorage.getItem('username') ?? '') + "/"
-  isFileMode = true
-
-  toggleDiv(isFile: boolean): void {
-    this.showDiv = true
-    if(isFile) this.isFileMode = true
-    else this.isFileMode = false
-  }
-
+  //list manipulations
   pathFileterList() {
     this.filteredDocs = []
     for(var i = 0; i < this.allDocs.length; i++) {
@@ -63,6 +49,7 @@ export class MainPageComponent {
     });
   }
 
+  //show folder
   openFolder(file: IFile) {
     this.currentPath = file.name + '/'
     this.pathFileterList()
@@ -78,42 +65,23 @@ export class MainPageComponent {
     if(this.currentPath.split('/').length == 2) this.isBackButtonDisabled = true
   }
 
-  getForrmatedCurrentPath() {
-    const parts = this.currentPath.split('/')
-    var path = 'Root'
-    for(var i = 1; i < parts.length; i++) path += ' > ' + parts[i] 
-    return path.slice(0, path.length - 2)
-  }
-
-  logout() {
-    this.cognitoService.signOut()
-    this.router.navigate(['/'])
-  }
-
-  whenAddedNewDoc(item: IFile) {
+  //create
+  whenCreatedNewDoc(item: IFile) {
     this.allDocs.unshift(item)
     this.allDocs = this.sortedList(this.allDocs)
     this.pathFileterList()
   }
 
-  getAvailableFolders(file: IFile) {
-    var goodDirectories: string[] = [] 
-    for(var i = 0; i < this.allDocs.length; i++) {
-      var currDoc = this.allDocs[i]
-      if(currDoc.isFolder && !this.isNameAlreadyExist(file.name, currDoc.name)) goodDirectories.push(currDoc.name) 
-    }
-    var root: string = localStorage.getItem('username') ?? ''
-    if(!this.isNameAlreadyExist(file.name, root)) goodDirectories.push(root)
-    return goodDirectories
+  //delete
+  delete(file: IFile) {
+    this.fileService.delete(file.id, file.name, file.isFolder).subscribe((res) => { 
+      const index = this.allDocs.indexOf(file)
+      if (index !== -1)  this.allDocs.splice(index, 1)
+      this.pathFileterList()
+    })
   }
 
-  isNameAlreadyExist(docName: string, folderName: string) {
-    var fileParts = docName.split('/')
-    var newName = folderName + '/' + fileParts[fileParts.length - 1]
-    for(var i in this.allDocs) if(this.allDocs[i].name == newName) return true
-    return false
-  }
-
+  //move
   openMoveDialog(file: IFile): void {
     const dialogRef = this.dialog.open(MoveDialog, { data: { directories: this.getAvailableFolders(file) } });
   
@@ -134,13 +102,48 @@ export class MainPageComponent {
     });
   }
 
-  delete(file: IFile) {
-    this.fileService.delete(file.id, file.name, file.isFolder).subscribe((res) => { 
-      console.log(res) 
-      const index = this.allDocs.indexOf(file)
-      if (index !== -1)  this.allDocs.splice(index, 1)
-      this.pathFileterList()
-    })
+  getAvailableFolders(file: IFile) {
+    var goodDirectories: string[] = [] 
+    for(var i = 0; i < this.allDocs.length; i++) {
+      var currDoc = this.allDocs[i]
+      if(currDoc.isFolder && !this.isNameAlreadyExist(file.name, currDoc.name)) goodDirectories.push(currDoc.name) 
+    }
+    var root: string = localStorage.getItem('username') ?? ''
+    if(!this.isNameAlreadyExist(file.name, root)) goodDirectories.push(root)
+    return goodDirectories
+  }
+
+  isNameAlreadyExist(docName: string, folderName: string) {
+    var fileParts = docName.split('/')
+    var newName = folderName + '/' + fileParts[fileParts.length - 1]
+    for(var i in this.allDocs) if(this.allDocs[i].name == newName) return true
+    return false
+  }
+
+  //logout
+  logout() {
+    this.cognitoService.signOut()
+    this.router.navigate(['/'])
+  }
+
+  //helpers
+  toggleDiv(isFile: boolean): void {
+    this.showDiv = true
+    if(isFile) this.isFileMode = true
+    else this.isFileMode = false
+  }
+
+  getForrmatedCurrentPath() {
+    const parts = this.currentPath.split('/')
+    var path = 'Root'
+    for(var i = 1; i < parts.length; i++) path += ' > ' + parts[i] 
+    return path.slice(0, path.length - 2)
+  }
+
+  getName(file: IFile) {
+    const parts = file.name.split('/')
+    if (file.isFolder) return parts[parts.length - 1]
+    return parts[parts.length - 1] + '.' + file.type
   }
 }
 
