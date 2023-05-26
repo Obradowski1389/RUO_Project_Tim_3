@@ -22,7 +22,7 @@ export class FileService {
     return this.client.put<any>(environment.host + 'move', file)
   }
 
-  delete(id: string, name: string) {
-    return this.client.put<any>(environment.host + 'delete', {'id' : id, 'name' : name} )
+  delete(id: string, name: string, isFolder: boolean) {
+    return this.client.put<any>(environment.host + 'delete', {'id' : id, 'name' : name, 'isFolder': isFolder})
   }
 }
