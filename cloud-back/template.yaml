@@ -16,33 +16,103 @@ Globals:
     Timeout: 3
     MemorySize: 128
 
-
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  CreateFileFunction:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: hello_world/
-      Handler: app.lambda1
+      CodeUri: createFile/
+      Handler: create_file.create
       Runtime: python3.9
       Architectures:
         - x86_64
       Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        CreateFile:
+          Type: Api
           Properties:
-            Path: /hello
-            Method: get
+            Path: /create
+            Method: post
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: metadata-cloud-back
+        - S3WritePolicy:
+            BucketName: files-cloud-back
 
-# Outputs:
-#   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-#   # Find out more about other implicit resources you can reference within SAM
-#   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-#   HelloWorldApi:
-#     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-#   HelloWorldFunction:
-#     Description: "Hello World Lambda Function ARN"
-#     Value: !GetAtt HelloWorldFunction.Arn
-#   HelloWorldFunctionIamRole:
-#     Description: "Implicit IAM Role created for Hello World function"
-#     Value: !GetAtt HelloWorldFunctionRole.Arn
+  GetAllFilesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getAllFiles/
+      Handler: get_all.get_all_for_user
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        GetAllFiles:
+          Type: Api
+          Properties:
+            Path: /{username}
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: metadata-cloud-back
+
+  MoveFileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: moveFile/
+      Handler: move_file.move
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        MoveFileFunction:
+          Type: Api
+          Properties:
+            Path: /move
+            Method: put
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: metadata-cloud-back
+        - DynamoDBWritePolicy:
+            TableName: metadata-cloud-back
+        - S3FullAccessPolicy:
+            BucketName: files-cloud-back
+
+  DeleteOneFileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: deleteFile/
+      Handler: delete_file.delete_one_file
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        DeleteOneFileFunction:
+          Type: Api
+          Properties:
+            Path: /delete
+            Method: put
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: metadata-cloud-back
+        - S3FullAccessPolicy:
+            BucketName: files-cloud-back
+
+  FileMetadataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+        TableName: metadata-cloud-back
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+  FileStorageBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: files-cloud-back

@@ -7,10 +7,13 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/environments/material/material.module';
 import { ConfirmSignupComponent } from './confirm-signup/confirm-signup.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { MainPageComponent, MoveDialog } from './main-page/main-page.component';
+import { AddModifyComponent } from './add-modify/add-modify.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { HttpClientModule } from '@angular/common/http';
     SignUpComponent,
     LoginComponent,
     ProfileComponent,
-    ConfirmSignupComponent
+    ConfirmSignupComponent,
+    MainPageComponent,
+    AddModifyComponent,
+    MoveDialog
   ],
   imports: [
     BrowserModule,
@@ -26,7 +32,9 @@ import { HttpClientModule } from '@angular/common/http';
     NoopAnimationsModule,
     ReactiveFormsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

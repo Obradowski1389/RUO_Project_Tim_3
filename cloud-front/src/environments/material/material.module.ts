@@ -20,9 +20,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatChipsModule } from '@angular/material/chips';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -49,7 +51,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatRippleModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatChipsModule
   ],
   exports: [
     MatButtonModule,
@@ -76,7 +79,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatRippleModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatChipsModule
   ]
 })
 export class MaterialModule {}

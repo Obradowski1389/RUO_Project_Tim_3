@@ -1,0 +1,168 @@
+.wrapper {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1px 7fr;
+    background-color: #fefefe;
+}
+  
+.navbar {
+    padding: 1rem;
+    background-color: #fafafa;
+    align-content: center;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title{
+    display: flex; 
+    align-items: center; 
+    margin-left:2px
+}
+
+.navbar-button{
+    width: 90%;
+    height: 40px;
+    font-weight: 600;
+}
+
+button mat-icon {
+    scale: 1.2;
+}
+  
+.divider {
+    background-color: #7f8594;
+    opacity: 0.5;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+  
+.main-content {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease;
+    background-color: rgba(127, 133, 148, 0.5);
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+}
+  
+.overlay-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+  
+.slide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 3;
+}
+  
+.slide {
+    width: 26rem;
+    height: 100%;
+    transition: transform 0.5s ease;
+    transform: translateX(-100%);
+}
+  
+.slide-in {
+    transform: translateX(0%);
+}
+  
+.slide-out {
+    transform: translateX(-101%);
+}
+  
+.no-click {
+    pointer-events: none;
+}
+
+.path{
+    display: flex; 
+    margin: 0; 
+    justify-content: start; 
+    align-items: center;
+    margin-left: 2rem;
+    margin-bottom: 0;
+    margin-top: 2rem;
+}
+
+.path-text {
+    padding: 0; 
+    margin: 0; 
+    margin-left: 1rem;
+}
+
+ul{
+    list-style-type: none; 
+    display: flex; 
+    flex-wrap: wrap; 
+    padding: 1rem; 
+    margin: 0;
+}
+
+.item_div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 1rem;
+    margin: .5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.file_div {
+    background: linear-gradient(45deg, #c6d0ee, #f5f7fc);
+  }
+
+.folder_div {
+    background: linear-gradient(45deg, #fae689, #faf5de);
+}
+
+.folder_div:hover {
+    scale: 1.015;
+    cursor: pointer;
+}
+  
+  .top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 12px;
+  }
+  
+  .top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .bottom {
+    margin-top: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 3px;
+  }
+
+.info-text{
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 7px;
+    cursor: default;
+    word-break: break-all;
+}
