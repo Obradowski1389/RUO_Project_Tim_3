@@ -82,6 +82,46 @@ export class MainPageComponent {
     })
   }
 
+  download(file: IFile) {
+    this.fileService.download(file.name, file.type).subscribe((res) => {
+      const items = file.name.split('/');
+      const lastItem = items[items.length - 1];
+      this._download(res.value, lastItem, this.getMimeType('.' + file.type))
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  _download(res: any, fn: string, extension: string) {
+    let data = this.base64ToFile(res, fn, extension);
+    let element = document.createElement('a');
+    window.URL = window.URL || window.webkitURL;
+    element.setAttribute('href', window.URL.createObjectURL(data));
+    element.setAttribute('download', data.name);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+  
+  base64ToFile(base64data: string, myFileNameWithdotExtension: string, fileType: string): File {
+    const content = window.atob(base64data);
+    const fileName = myFileNameWithdotExtension;
+    const type = fileType;
+    const uint8Array = new Uint8Array(content.length);
+    
+    for (let i = 0; i < content.length; i++) {
+      uint8Array[i] = content.charCodeAt(i);
+    }
+    
+    const blob = new Blob([uint8Array], { type });
+    return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+  }
+
+  modify(file: IFile){
+
+  }
+
   //move
   openMoveDialog(file: IFile): void {
     const dialogRef = this.dialog.open(MoveDialog, { data: { directories: this.getAvailableFolders(file) } });
@@ -145,6 +185,29 @@ export class MainPageComponent {
     const parts = file.name.split('/')
     if (file.isFolder) return parts[parts.length - 1]
     return parts[parts.length - 1] + '.' + file.type
+  }
+
+  getMimeType(fileExtension: string): string {
+    const mimeTypeMap: Record<string, string> = {
+      // Add more extensions and corresponding MIME types as needed
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.svg': 'image/svg+xml',
+        '.pdf': 'application/pdf',
+        '.doc': 'application/msword',
+        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        '.xls': 'application/vnd.ms-excel',
+        '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        '.ppt': 'application/vnd.ms-powerpoint',
+        '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        '.txt': 'text/plain',
+        '.html': 'text/html',
+        '.css': 'text/css',
+        '.js': 'application/javascript',
+    };
+    return mimeTypeMap[fileExtension.toLowerCase()];
   }
 }
 

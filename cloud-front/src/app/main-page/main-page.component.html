@@ -69,7 +69,7 @@
                 <mat-icon style="color: #364165; scale:1.3">more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>
+                <button mat-menu-item (click)="modify(item)">
                   <span>Modify</span>
                 </button>
                 <button mat-menu-item (click)="openMoveDialog(item)">
@@ -78,7 +78,7 @@
                 <button mat-menu-item (click)="delete(item)">
                   <span>Delete</span>
                 </button>
-                <button mat-menu-item>
+                <button mat-menu-item (click)="download(item)">
                   <span>Download</span>
                 </button>
               </mat-menu>

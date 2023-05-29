@@ -29,6 +29,8 @@
 /cloud-front/.history/*git
 
 # Miscellaneous
+.angular
+node_modules
 /cloud-front/.angular/cache/
 /cloud-front/.sass-cache/
 /cloud-front/connect.lock
