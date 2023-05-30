@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FileCreateDTO, FileMoveDTO } from 'src/model/file';
 
@@ -24,5 +25,9 @@ export class FileService {
 
   delete(id: string, name: string, isFolder: boolean) {
     return this.client.put<any>(environment.host + 'delete', {'id' : id, 'name' : name, 'isFolder': isFolder})
+  }
+
+  download(name: string, type: string): Observable<any> {
+    return this.client.post<any>(environment.host + 'download', {'name': name, 'type': type})
   }
 }

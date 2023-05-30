@@ -98,6 +98,25 @@ Resources:
         - S3FullAccessPolicy:
             BucketName: files-cloud-back
 
+  DownloadFile:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: downloadFile/
+      Handler: download_file.download_from_s3
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        DownloadFile:
+          Type: Api
+          Properties:
+            Path: /download
+            Method: post
+      Policies:
+        - S3FullAccessPolicy:
+            BucketName: files-cloud-back
+
+
   FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:
