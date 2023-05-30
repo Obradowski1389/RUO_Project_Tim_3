@@ -115,7 +115,7 @@ Resources:
       Policies:
         - S3FullAccessPolicy:
             BucketName: files-cloud-back
-
+            
   FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:

@@ -120,7 +120,6 @@ export class MainPageComponent {
   }
 
   modify(file: IFile){
-    
     const dialogRef = this.dialog.open(ModifyDataDialogComponent, {
       data: file
     });

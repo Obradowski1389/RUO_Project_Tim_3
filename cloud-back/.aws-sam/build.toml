@@ -23,10 +23,10 @@ functions = ["ModifyFileFunction"]
 codeuri = "D:\\Fax\\New folder (2)\\RUO_Project_Tim_3\\cloud-back\\createFile"
 runtime = "python3.9"
 architecture = "x86_64"
-handler = "create_file.create"
+handler = "get_all.get_all_for_user"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["CreateFileFunction"]
+functions = ["GetAllFilesFunction"]
 
 [function_build_definitions.1e8092df-f50f-4c18-980f-086049015a16]
 codeuri = "D:\\Fax\\New folder (2)\\RUO_Project_Tim_3\\cloud-back\\getAllFiles"
@@ -54,5 +54,14 @@ handler = "delete_file.delete_one_file"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["DeleteOneFileFunction"]
+
+[function_build_definitions.7d5cd4aa-e303-4dd4-808e-f1f1bbb47d06]
+codeuri = "D:\\Fax\\New folder (2)\\RUO_Project_Tim_3\\cloud-back\\downloadFile"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "downloadFile.download_file"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["DownloadFile"]
 
 [layer_build_definitions]
