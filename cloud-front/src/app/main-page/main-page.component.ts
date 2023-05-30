@@ -4,6 +4,7 @@ import { CognitoService } from 'src/cognito.service';
 import { FileService } from '../service/file.service';
 import { FileMoveDTO, IFile } from 'src/model/file';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { ModifyDataDialogComponent } from '../modify-data-dialog/modify-data-dialog.component';
 
 @Component({
   selector: 'app-main-page',
@@ -119,7 +120,13 @@ export class MainPageComponent {
   }
 
   modify(file: IFile){
+    const dialogRef = this.dialog.open(ModifyDataDialogComponent, {
+      data: file
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result:', result);
+    });
   }
 
   //move

@@ -115,8 +115,7 @@ Resources:
       Policies:
         - S3FullAccessPolicy:
             BucketName: files-cloud-back
-
-
+            
   FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -135,3 +134,23 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: files-cloud-back
+
+  ModifyFileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: modifyFile/
+      Handler: modify_file.update_file
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        CreateFile:
+          Type: Api
+          Properties:
+            Path: /update
+            Method: put
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: metadata-cloud-back
+        - DynamoDBReadPolicy:
+            TableName: metadata-cloud-back

@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MainPageComponent, MoveDialog } from './main-page/main-page.component';
 import { AddModifyComponent } from './add-modify/add-modify.component';
+import { ModifyDataDialogComponent } from './modify-data-dialog/modify-data-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AddModifyComponent } from './add-modify/add-modify.component';
     ConfirmSignupComponent,
     MainPageComponent,
     AddModifyComponent,
-    MoveDialog
+    MoveDialog,
+    ModifyDataDialogComponent
   ],
   imports: [
     BrowserModule,
