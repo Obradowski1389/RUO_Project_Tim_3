@@ -98,8 +98,6 @@ Resources:
         - S3FullAccessPolicy:
             BucketName: files-cloud-back
 
-<<<<<<< Updated upstream
-=======
   DownloadFile:
     Type: AWS::Serverless::Function
     Properties:
@@ -118,7 +116,6 @@ Resources:
         - S3FullAccessPolicy:
             BucketName: files-cloud-back
 
->>>>>>> Stashed changes
   FileMetadataTable:
     Type: AWS::DynamoDB::Table
     Properties:

@@ -83,8 +83,6 @@ export class MainPageComponent {
     })
   }
 
-<<<<<<< Updated upstream
-=======
   download(file: IFile) {
     this.fileService.download(file.name, file.type).subscribe((res) => {
       const items = file.name.split('/');
@@ -129,11 +127,9 @@ export class MainPageComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('Dialog result:', result);
-      // Handle the result or perform any additional actions
     });
   }
 
->>>>>>> Stashed changes
   //move
   openMoveDialog(file: IFile): void {
     const dialogRef = this.dialog.open(MoveDialog, { data: { directories: this.getAvailableFolders(file) } });
@@ -197,6 +193,29 @@ export class MainPageComponent {
     const parts = file.name.split('/')
     if (file.isFolder) return parts[parts.length - 1]
     return parts[parts.length - 1] + '.' + file.type
+  }
+
+  getMimeType(fileExtension: string): string {
+    const mimeTypeMap: Record<string, string> = {
+      // Add more extensions and corresponding MIME types as needed
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.svg': 'image/svg+xml',
+        '.pdf': 'application/pdf',
+        '.doc': 'application/msword',
+        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        '.xls': 'application/vnd.ms-excel',
+        '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        '.ppt': 'application/vnd.ms-powerpoint',
+        '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        '.txt': 'text/plain',
+        '.html': 'text/html',
+        '.css': 'text/css',
+        '.js': 'application/javascript',
+    };
+    return mimeTypeMap[fileExtension.toLowerCase()];
   }
 }
 
