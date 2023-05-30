@@ -4,6 +4,7 @@ import { CognitoService } from 'src/cognito.service';
 import { FileService } from '../service/file.service';
 import { FileMoveDTO, IFile } from 'src/model/file';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { ModifyDataDialogComponent } from '../modify-data-dialog/modify-data-dialog.component';
 
 @Component({
   selector: 'app-main-page',
@@ -82,6 +83,57 @@ export class MainPageComponent {
     })
   }
 
+<<<<<<< Updated upstream
+=======
+  download(file: IFile) {
+    this.fileService.download(file.name, file.type).subscribe((res) => {
+      const items = file.name.split('/');
+      const lastItem = items[items.length - 1];
+      this._download(res.value, lastItem, this.getMimeType('.' + file.type))
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  _download(res: any, fn: string, extension: string) {
+    let data = this.base64ToFile(res, fn, extension);
+    let element = document.createElement('a');
+    window.URL = window.URL || window.webkitURL;
+    element.setAttribute('href', window.URL.createObjectURL(data));
+    element.setAttribute('download', data.name);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+  
+  base64ToFile(base64data: string, myFileNameWithdotExtension: string, fileType: string): File {
+    const content = window.atob(base64data);
+    const fileName = myFileNameWithdotExtension;
+    const type = fileType;
+    const uint8Array = new Uint8Array(content.length);
+    
+    for (let i = 0; i < content.length; i++) {
+      uint8Array[i] = content.charCodeAt(i);
+    }
+    
+    const blob = new Blob([uint8Array], { type });
+    return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+  }
+
+  modify(file: IFile){
+    
+    const dialogRef = this.dialog.open(ModifyDataDialogComponent, {
+      data: file
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result:', result);
+      // Handle the result or perform any additional actions
+    });
+  }
+
+>>>>>>> Stashed changes
   //move
   openMoveDialog(file: IFile): void {
     const dialogRef = this.dialog.open(MoveDialog, { data: { directories: this.getAvailableFolders(file) } });

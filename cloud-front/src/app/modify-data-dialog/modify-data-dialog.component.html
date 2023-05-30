@@ -1,0 +1,35 @@
+<div class="wrapper">
+    <form *ngIf="isFileMode" action="" [formGroup]="fileForm" (ngSubmit)="modifyFileName()">
+  
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input formControlName="name" type="text" matInput>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="description" matInput style="height: 100px;"></textarea>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+            <mat-label>Tags</mat-label>
+            <input formControlName="tagsInput" (keydown.enter)="addTag($event)" matInput placeholder="Press Enter to add">
+            <ul class="chips-list">
+                <li *ngFor="let item of tags; let i = index" class="chip">
+                    {{ item }}
+                    <mat-icon class="chip-icon" (click)="removeTag(i)">cancel</mat-icon>
+                </li>
+            </ul>
+        </mat-form-field>
+  
+        <div class="button-container">
+            <button mat-button color="accent" type="button" (click)="cancel()">CANCEL</button>
+            <button mat-raised-button color="primary" type="submit">SAVE</button>
+        </div>
+    </form>
+
+    <div class="title" *ngIf="!isFileMode">
+        <mat-icon style="scale: 1.4;">folder</mat-icon>
+        <h1 style="margin-top: .5rem;">Add Folder</h1>
+    </div>  
+</div> 

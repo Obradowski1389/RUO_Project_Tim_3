@@ -37,4 +37,25 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["DeleteOneFileFunction"]
 
+<<<<<<< Updated upstream
+=======
+[function_build_definitions.7d5cd4aa-e303-4dd4-808e-f1f1bbb47d06]
+codeuri = "D:\\Fax\\New folder (2)\\RUO_Project_Tim_3\\cloud-back\\downloadFile"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "downloadFile.download_file"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["DownloadFile"]
+
+[function_build_definitions.f4df9420-aa26-4265-9539-43c136110570]
+codeuri = "D:\\Fax\\New folder (2)\\RUO_Project_Tim_3\\cloud-back\\modifyFile"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "modify_file.update_file"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["ModifyFileFunction"]
+
+>>>>>>> Stashed changes
 [layer_build_definitions]
