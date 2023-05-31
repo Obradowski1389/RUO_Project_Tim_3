@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { MainPageComponent, MoveDialog } from './main-page/main-page.component';
 import { AddModifyComponent } from './add-modify/add-modify.component';
 import { ModifyDataDialogComponent } from './modify-data-dialog/modify-data-dialog.component';
+import { AddFriendDialogComponent } from './add-friend-dialog/add-friend-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ModifyDataDialogComponent } from './modify-data-dialog/modify-data-dial
     MainPageComponent,
     AddModifyComponent,
     MoveDialog,
-    ModifyDataDialogComponent
+    ModifyDataDialogComponent,
+    AddFriendDialogComponent
   ],
   imports: [
     BrowserModule,

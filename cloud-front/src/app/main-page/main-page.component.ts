@@ -5,6 +5,7 @@ import { FileService } from '../service/file.service';
 import { FileMoveDTO, IFile } from 'src/model/file';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ModifyDataDialogComponent } from '../modify-data-dialog/modify-data-dialog.component';
+import { AddFriendDialogComponent } from '../add-friend-dialog/add-friend-dialog.component';
 
 @Component({
   selector: 'app-main-page',
@@ -81,6 +82,18 @@ export class MainPageComponent {
       if (index !== -1)  this.allDocs.splice(index, 1)
       this.pathFileterList()
     })
+  }
+
+  inviteFriend(): void {
+    const dialogRef = this.dialog.open(AddFriendDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result:', result);
+    });
+  }
+
+  share(file: IFile): void {
+    
   }
 
   download(file: IFile) {
