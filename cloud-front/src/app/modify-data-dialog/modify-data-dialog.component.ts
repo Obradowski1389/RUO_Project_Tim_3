@@ -65,7 +65,7 @@ export class ModifyDataDialogComponent {
     this.fileService.modify(this.data.id, newName, this.fileForm.value.description!, this.tags, false).subscribe(
       (res) => {
         console.log(res);
-        this.fileService.sendNotification('isomidobradovic@gmail.com', 'File: ' + this.fileForm.value.name + ' - Successfully Updated').subscribe(
+        this.fileService.sendNotification(localStorage.getItem('email')!, 'File: ' + this.fileForm.value.name + ' - Successfully Updated').subscribe(
           (res) => {
             console.log(res);
           }
