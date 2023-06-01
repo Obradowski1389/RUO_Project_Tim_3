@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from '../service/file.service';
+import { CognitoService } from 'src/cognito.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-friend-dialog',
@@ -12,21 +14,28 @@ export class AddFriendDialogComponent {
 
 
   fileForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    email: new FormControl('')
+    email: new FormControl('', Validators.required)
   })
 
-  constructor(public dialogRef: MatDialogRef<AddFriendDialogComponent>, private fileService: FileService) {}
+  constructor(public dialogRef: MatDialogRef<AddFriendDialogComponent>, private fileService: FileService, private router: Router) {}
 
   sendFriendRequest() {
-
+    const username = localStorage.getItem('username');
+    if (username == null) {
+      this.cancel();
+      this.router.navigate(['login']);
+    }
+    this.fileService.shareRepositoryInvitation(username!, this.fileForm.value.email!).subscribe(
+      (res) => {
+        console.log(res);
+      }, (error) => {
+        console.log(error);
+      }
+    )
   }
 
   cancel() {
     this.dialogRef.close();
   }
 
-  sendRequest() {
-
-  }
 }

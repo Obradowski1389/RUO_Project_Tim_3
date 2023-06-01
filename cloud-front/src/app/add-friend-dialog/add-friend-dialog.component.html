@@ -2,11 +2,6 @@
     <form action="" [formGroup]="fileForm" (ngSubmit)="sendFriendRequest()">
   
         <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
-            <input formControlName="name" type="text" matInput>
-        </mat-form-field>
-  
-        <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
             <textarea formControlName="email" matInput ></textarea>
         </mat-form-field>

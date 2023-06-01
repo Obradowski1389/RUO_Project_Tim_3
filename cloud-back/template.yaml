@@ -18,6 +18,38 @@ Globals:
 
 Resources:
 
+  SendNotification:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sendNotification/
+      Handler: send_notification.send_notification
+      Runtime: python3.9
+      Role: arn:aws:iam::070424787807:role/AmazonSESFULLAccess
+      Architectures:
+        - x86_64
+      Events:
+        SendInvite:
+          Type: Api
+          Properties:
+            Path: /notify
+            Method: post
+
+  SendSharingInvite:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sendInvite/
+      Handler: send_invite.send_email
+      Runtime: python3.9
+      Role: arn:aws:iam::070424787807:role/AmazonSESFULLAccess
+      Architectures:
+        - x86_64
+      Events:
+        SendInvite:
+          Type: Api
+          Properties:
+            Path: /invite
+            Method: post
+
   CreateFileFunction:
     Type: AWS::Serverless::Function
     Properties:

@@ -61,10 +61,15 @@ export class ModifyDataDialogComponent {
   }
 
   modifyFileName() {
-    const newName = this.prefix + '/' +this.fileForm.value.name;
+    const newName = this.prefix + '/' + this.fileForm.value.name;
     this.fileService.modify(this.data.id, newName, this.fileForm.value.description!, this.tags, false).subscribe(
       (res) => {
         console.log(res);
+        this.fileService.sendNotification('isomidobradovic@gmail.com', 'File: ' + this.fileForm.value.name + ' - Successfully Updated').subscribe(
+          (res) => {
+            console.log(res);
+          }
+        )
         this.closeDialog();
     }, (error) => {
         console.log(error);

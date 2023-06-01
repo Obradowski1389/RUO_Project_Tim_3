@@ -92,10 +92,6 @@ export class MainPageComponent {
     });
   }
 
-  share(file: IFile): void {
-    
-  }
-
   download(file: IFile) {
     this.fileService.download(file.name, file.type).subscribe((res) => {
       const items = file.name.split('/');
