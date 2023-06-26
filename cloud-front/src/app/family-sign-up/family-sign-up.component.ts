@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CognitoService } from 'src/cognito.service';
 import { IUser } from 'src/model/user';
 import { RespondDialogComponent } from '../respond-dialog/respond-dialog.component';
+import { CognitoService } from '../service/cognito.service';
 
 @Component({
   selector: 'app-family-sign-up',

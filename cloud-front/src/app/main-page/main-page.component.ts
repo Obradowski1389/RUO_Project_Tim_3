@@ -1,11 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { CognitoService } from 'src/cognito.service';
 import { FileService } from '../service/file.service';
 import { FileMoveDTO, IFile } from 'src/model/file';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ModifyDataDialogComponent } from '../modify-data-dialog/modify-data-dialog.component';
 import { AddFriendDialogComponent } from '../add-friend-dialog/add-friend-dialog.component';
+import { CognitoService } from '../service/cognito.service';
 
 @Component({
   selector: 'app-main-page',

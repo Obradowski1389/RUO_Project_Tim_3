@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { CognitoService } from 'src/cognito.service';
 import { IUser } from 'src/model/user';
+import { CognitoService } from '../service/cognito.service';
 
 @Component({
   selector: 'app-confirm-signup',

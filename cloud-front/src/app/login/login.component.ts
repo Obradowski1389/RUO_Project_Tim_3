@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CognitoService } from 'src/cognito.service';
 import { IUser } from 'src/model/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FileService } from '../service/file.service';
 import { IFile } from 'src/model/file';
+import { CognitoService } from '../service/cognito.service';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +26,7 @@ export class LoginComponent {
     this.user.email = form.email!;
     this.user.password = form.password!;
     this.cognitoService.login(this.user).then((res)=>{
+      console.log(res);
       localStorage.setItem('username', res.username);
       localStorage.setItem('email', this.user.email);
       this.router.navigate(['/home']);

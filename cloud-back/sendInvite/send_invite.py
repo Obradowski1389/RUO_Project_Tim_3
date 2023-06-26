@@ -1,6 +1,12 @@
 import json
 import boto3
 
+table_name = "Sharing"
+dynamodb = boto3.resource('dynamodb')
+cognito = boto3.client('cognito-idp')
+client = boto3.client("ses", region_name='eu-central-1')
+
+
 def return_error(message, statusCode):
     return {
         "statusCode": statusCode,
@@ -14,7 +20,6 @@ def return_error(message, statusCode):
 
 
 def get_user(username):
-    cognito = boto3.client('cognito-idp')
     response = cognito.admin_get_user(
         UserPoolId='eu-central-1_a1fZUXk6x',
         Username=username
@@ -32,7 +37,6 @@ def send_email(event, context):
     if(email is None or sender is None):
         return_error("Bad request. Please input user email", 400)
 
-    client = boto3.client("ses", region_name='eu-central-1')
     subject = "Invitation For Sharing Cloud Storage"
     body = f"You have been invited to join DocHub by {sender}!\n Proceed to http://localhost:4200/familyRegistration to respond to the invite"
     message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
@@ -40,6 +44,8 @@ def send_email(event, context):
 
         response = client.send_email(            
             Source="isomidobradovic@gmail.com", Destination={"ToAddresses": [email]}, Message=message)
+        save_sharing_info(event)
+        
         return {
             "statusCode": 200,
                 "headers": {
@@ -52,3 +58,21 @@ def send_email(event, context):
     except Exception as e:
         print("Error:", e)
         return_error("Error: Failed to send request. Please try again later.", 500)
+
+def save_sharing_info(event):
+    body = json.loads(event['body'])
+    email = body['targetEmail']
+    sender = body["senderUsername"]
+    try:
+        table = dynamodb.Table(table_name)
+        print("awofijofijasf")
+        table.put_item(
+            Item= {
+                "targetEmail" : email,
+                "senderUsername": sender,
+                "status": "CREATED"
+            }
+        )
+    except Exception as ex:
+        print("Error: ", ex)
+        return_error("Error: wiriting in DB", 500)

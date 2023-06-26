@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CognitoService } from 'src/cognito.service';
 import { IUser } from 'src/model/user';
 import {
   FormGroup,
@@ -8,6 +7,7 @@ import {
   Validators,
   FormControl
 } from '@angular/forms';
+import { CognitoService } from '../service/cognito.service';
 
 @Component({
   selector: 'app-sign-up',

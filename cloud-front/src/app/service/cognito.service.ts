@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Amplify, Auth } from 'aws-amplify';
-import { environment } from './environments/environment';
-import { IUser } from './model/user';
+import { environment } from '../../environments/environment';
+import { IUser } from '../../model/user';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,9 +14,10 @@ export class CognitoService {
   }
 
   signUp(user: IUser):Promise<any> {
+
     return Auth.signUp({
       username: user.email,
-      password: user.password,
+      password: user.password
     });
   }
 
