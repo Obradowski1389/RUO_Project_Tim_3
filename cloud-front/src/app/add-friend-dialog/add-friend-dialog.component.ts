@@ -28,6 +28,8 @@ export class AddFriendDialogComponent {
     this.fileService.shareRepositoryInvitation(username!, this.fileForm.value.email!).subscribe(
       (res) => {
         console.log(res);
+        this.dialogRef.close();
+        alert("Request successfully sent");
       }, (error) => {
         console.log(error);
       }

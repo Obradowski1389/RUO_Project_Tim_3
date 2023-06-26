@@ -13,7 +13,7 @@ const routes: Routes = [
   {path: 'profile', component:ProfileComponent},
   {path: 'confirmSignUp', component:ConfirmSignupComponent},
   {path: 'home', component:MainPageComponent, canActivate: [AuthGuardService]},
-  {path: '', pathMatch: 'full', redirectTo:'signUp'}
+  {path: '', pathMatch: 'full', redirectTo:'login'}
 ];
 
 @NgModule({

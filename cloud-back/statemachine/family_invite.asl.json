@@ -4,7 +4,7 @@
     "States": {
         "CreateRequest": {
             "Type": "Task",
-            "Resource": "",
+            "Resource": "arn:aws:lambda:eu-central-1:070424787807:function:cloud-back-SendSharingInvite-HKi2UofWMD55",
             "Next": "WaitState"
         },
         "WaitState": {

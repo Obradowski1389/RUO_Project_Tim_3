@@ -41,14 +41,16 @@ Resources:
       Handler: send_invite.send_email
       Runtime: python3.9
       Role: arn:aws:iam::070424787807:role/AmazonSESFULLAccess
-      Architectures:
+      Architectures: 
         - x86_64
       Events:
-        SendInvite:
+        SendEmail:
           Type: Api
           Properties:
             Path: /invite
             Method: post
+      Policies:
+        - PolicyName: SESFullAccessPolicy
 
   CreateFileFunction:
     Type: AWS::Serverless::Function
