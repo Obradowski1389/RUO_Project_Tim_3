@@ -16,6 +16,8 @@ import { MainPageComponent, MoveDialog } from './main-page/main-page.component';
 import { AddModifyComponent } from './add-modify/add-modify.component';
 import { ModifyDataDialogComponent } from './modify-data-dialog/modify-data-dialog.component';
 import { AddFriendDialogComponent } from './add-friend-dialog/add-friend-dialog.component';
+import { FamilySignUpComponent } from './family-sign-up/family-sign-up.component';
+import { RespondDialogComponent } from './respond-dialog/respond-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { AddFriendDialogComponent } from './add-friend-dialog/add-friend-dialog.
     AddModifyComponent,
     MoveDialog,
     ModifyDataDialogComponent,
-    AddFriendDialogComponent
+    AddFriendDialogComponent,
+    FamilySignUpComponent,
+    RespondDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,15 +1,43 @@
 import json
 import boto3
-# from trycourier import Courier
+
+def return_error(message, statusCode):
+    return {
+        "statusCode": statusCode,
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        },
+        "body": json.dumps({
+            "message": message
+        }),
+    }
+
+
+def get_user(username):
+    cognito = boto3.client('cognito-idp')
+    response = cognito.admin_get_user(
+        UserPoolId='eu-central-1_a1fZUXk6x',
+        Username=username
+    )
+
+    user_attributes = response['UserAttributes']
+    print('User:', user_attributes)
+    return user_attributes
+
 
 def send_email(event, context):
+    body = json.loads(event['body'])
+    email = body['targetEmail']
+    sender = body["senderUsername"]
+    if(email is None or sender is None):
+        return_error("Bad request. Please input user email", 400)
+
+    client = boto3.client("ses", region_name='eu-central-1')
+    subject = "Invitation For Sharing Cloud Storage"
+    body = f"You have been invited to join DocHub by {sender}!\n Proceed to http://localhost:4200/familyRegistration to respond to the invite"
+    message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
     try:
-        body = json.loads(event['body'])
-        email = body['targetEmail']
-        client = boto3.client("ses", region_name='eu-central-1')
-        subject = "Invitation For Sharing Cloud Storage"
-        body = "test"
-        message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
+
         response = client.send_email(            
             Source="isomidobradovic@gmail.com", Destination={"ToAddresses": [email]}, Message=message)
         return {
@@ -23,12 +51,4 @@ def send_email(event, context):
         }
     except Exception as e:
         print("Error:", e)
-        return {
-            "statusCode": 400,
-            "headers": {
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps({
-                "message": "Error: Failed to send request. Please try again later."
-            }),
-        }
+        return_error("Error: Failed to send request. Please try again later.", 500)
