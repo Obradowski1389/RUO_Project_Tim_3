@@ -13,8 +13,12 @@ def create(event, context):
     
     if not body['isFolder']:
         save_in_s3(event)
-    save_in_dynamo(event)
-    
+    try:
+        save_in_dynamo(event)
+    except:
+        if not body['isFolder']:
+            delete_from_s3(body['name'])
+
     return {
         "statusCode": 200,
         "headers": {
@@ -25,6 +29,7 @@ def create(event, context):
         }),
     }
     
+
 def save_in_dynamo(event):
     body = json.loads(event['body'])
     table = dynamodb.Table(table_name)
@@ -42,14 +47,23 @@ def save_in_dynamo(event):
         }
     )
     
+
 def save_in_s3(event):
     body = json.loads(event['body'])
-    file_base64 = body['file']
-    _, base64_without_header = file_base64.split(',', 1)
-    base64_decoded = base64.b64decode(base64_without_header)
-    file_bytes = bytes(base64_decoded)
+    file_bytes = decode(body)
     s3.put_object(
         Body=file_bytes,
         Bucket=bucket_name,
         Key=body['name']
     )
+
+
+def delete_from_s3(name):
+    s3.delete_object(Bucket=bucket_name, Key=name)
+
+
+def decode(body):
+    file_base64 = body['file']
+    _, base64_without_header = file_base64.split(',', 1)
+    base64_decoded = base64.b64decode(base64_without_header)
+    return bytes(base64_decoded)
