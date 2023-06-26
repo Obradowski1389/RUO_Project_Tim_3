@@ -8,12 +8,11 @@ s3 = boto3.client('s3')
 
 def delete_one_file(event, context):
     body = json.loads(event['body'])
-    
     if body['isFolder']:
         delete_folder(body)
     else:
         delete_file(body['id'], body['name'])
-    
+
     return {
         "statusCode": 200,
         "headers": {
@@ -25,9 +24,15 @@ def delete_one_file(event, context):
     }
     
 def delete_file(id: str, name: str):
-    dynamodb.Table(table_name).delete_item(Key={ 'id': id })
+    temp = s3.get_object(Bucket=bucket_name, Key=name)
     s3.delete_object(Bucket=bucket_name, Key=name)
-    
+    try:
+        dynamodb.Table(table_name).delete_item(Key={ 'id': id })
+    except:
+        s3.put_object(Body=temp, Bucket=bucket_name, Key=name)
+
+
+
 def delete_folder(body):
     #find all files
     prefix = body['name']
