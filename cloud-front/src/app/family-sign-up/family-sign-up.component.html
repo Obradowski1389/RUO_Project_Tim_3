@@ -4,7 +4,7 @@
         <form #form="ngForm" class="form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
             <mat-form-field class="form-input" appearance="outline">
                 <mat-label>Inviter Email</mat-label>
-                <input matInput type="text" name="inviter" formControlName="inviter"/>
+                <input [ngModel]="senderEmail" matInput type="text" name="inviter" formControlName="inviter"/>
             </mat-form-field>
             <div class="input-wrapper">
                 <mat-form-field class="form-input-half" style="margin-right: 5px;" appearance="outline">
@@ -24,7 +24,7 @@
             </mat-form-field>
             <mat-form-field class="form-input" appearance="outline">
                 <mat-label>E-mail</mat-label>
-                <input  matInput type="text" name="email" formControlName="email"/>
+                <input [ngModel]="targetEmail" matInput type="text" name="email" formControlName="email"/>
             </mat-form-field>
             <mat-form-field class="form-input" appearance="outline">
                 <mat-label>Username</mat-label>

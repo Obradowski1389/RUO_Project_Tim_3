@@ -73,8 +73,8 @@ export class CognitoService {
     return false
   }
 
-  signUpFamilyMember(userEmail: string, inviter: string){
-    return this.client.put<any>(environment.host + "acceptInvite", {"senderEmail": inviter, "targetEmail": userEmail})
+  resolveInvite(userEmail: string, inviter: string, accept: boolean){
+    return this.client.put<any>(environment.host + "resolveInvite", {"senderEmail": inviter, "targetEmail": userEmail, "accept": accept})
   }
   
 }

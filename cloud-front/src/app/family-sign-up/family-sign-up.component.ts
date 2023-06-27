@@ -26,13 +26,22 @@ export class FamilySignUpComponent {
 
   maxDate: Date = new Date();
 
+  targetEmail: string = "";
+  senderEmail: string = "";
+
   constructor(private router: Router, private cognitoService: CognitoService, private dialog: MatDialog) {
     this.maxDate = new Date();
     
   }
 
   ngOnInit(){
-    const dialogRef = this.dialog.open(RespondDialogComponent);
+    const urlParams = new URLSearchParams(window.location.search);
+    const sender64 = urlParams.get('send');
+    const target64 = urlParams.get("target");
+    if(sender64 != null) this.senderEmail = atob(sender64!);
+    if(target64 != null) this.targetEmail = atob(target64!);
+
+    const dialogRef = this.dialog.open(RespondDialogComponent, {data: {sender: this.senderEmail, target: this.targetEmail}});
     
   }
 
@@ -45,7 +54,7 @@ export class FamilySignUpComponent {
     this.user.password = form.password!;
     this.user.username = form.username!;
 
-    this.cognitoService.signUpFamilyMember(this.user.email, form.inviter!).subscribe({
+    this.cognitoService.resolveInvite(this.user.email, form.inviter!, true).subscribe({
       next: (val: any) => {
         console.log(val);
         this.cognitoService.signUp(this.user).then(()=>{
@@ -55,6 +64,7 @@ export class FamilySignUpComponent {
         })
       },
       error: (error: any) => {
+        alert(error.error.message);
         console.log(error);
       }
     });

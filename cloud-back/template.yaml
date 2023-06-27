@@ -59,11 +59,11 @@ Resources:
               - ses:SendEmail
             Resource: '*'
 
-  AcceptInvite:
+  ResolveInvite:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: acceptInvite/
-      Handler: accept_invite.accept_invite
+      CodeUri: resolveInvite/
+      Handler: resolve_invite.resolve_invite
       Runtime: python3.9
       Architectures: 
         - x86_64
@@ -71,7 +71,7 @@ Resources:
         AcceptInvite:
           Type: Api
           Properties:
-            Path: /acceptInvite
+            Path: /resolveInvite
             Method: put
       Policies:
         - DynamoDBWritePolicy:

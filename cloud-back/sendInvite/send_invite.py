@@ -1,6 +1,7 @@
 import json
 import boto3
 import datetime
+import base64
 
 table_name = "Sharing"
 dynamodb = boto3.resource('dynamodb')
@@ -23,13 +24,17 @@ def send_email(event, context):
     body = json.loads(event['body'])
     email = body['targetEmail']
     sender = body["senderEmail"]
+
+    sender64 = base64.b64encode(sender.encode("ascii")).decode("ascii")
+    email64 = base64.b64encode(email.encode("ascii")).decode("ascii")
+
     if(email is None or sender is None):
         return return_error("Bad request. Please input user email", 400)
 
     if check_sharing_info(event):
         return return_error("You already sent a request to this email", 400)
     subject = "Invitation For Sharing Cloud Storage"
-    body = "You have been invited to join DocHub!\n Proceed to http://localhost:4200/familyRegistration to respond to the invite"
+    body = f"You have been invited to join DocHub!\n Proceed to http://localhost:4200/familyRegistration?send={sender64}&target={email64} to respond to the invite"
     message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
     try:
 

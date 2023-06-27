@@ -47,11 +47,14 @@ def get_invite(event):
         return None
     
 
-def update_invite_info(email, username):
+def update_invite_info(email, username, accepted):
 
     update_expression = 'SET #attr = :val'
     expression_attribute_names = {'#attr': "status"}
-    expression_attribute_values = {':val': {'S': "ACCEPTED"}}
+    if(accepted):
+        expression_attribute_values = {':val': {'S': "ACCEPTED"}}
+    else:
+        expression_attribute_values = {":val": {'S': "DECLINED"}}
     condition_expression = '#condAttr = :condVal'
     expression_attribute_names['#condAttr'] = "senderEmail"
     expression_attribute_values[':condVal'] = {'S': username}
@@ -69,13 +72,17 @@ def update_invite_info(email, username):
         print("Error: ", e)
         raise e
     
-def send_email(event):
+def send_email(event, accepted):
     body = json.loads(event["body"])
     targetEmail = body["targetEmail"]
     senderEmail = body["senderEmail"]
 
     subject = "Cloud Storage Sharing Notification"
-    body = f"User {targetEmail} has accepted your invite! Now your storage is being shared with them. You can cancel this sharing at any time"
+    if(accepted):
+        body = f"User {targetEmail} has accepted your invite! Now your storage is being shared with them. You can cancel this sharing at any time"
+    else: 
+        body = f"User {targetEmail} has declined your invite for sharing your storage."
+
     message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
     try:
 
@@ -96,15 +103,17 @@ def send_email(event):
         return return_error("Error: Failed to send email to inviter.", 500)
 
 
-def accept_invite(event, context):
+def resolve_invite(event, context):
     body = json.loads(event['body'])
+
+    accept = bool(body["accept"])
 
     item = get_invite(event)
     if item is None:
         return return_error("Invitation for these users not found or has already been accepted.", 404)
     try:
-        update_invite_info(body["targetEmail"], body["senderEmail"])
-        send_email(event)
+        update_invite_info(body["targetEmail"], body["senderEmail"], accept)
+        send_email(event, accept)
     except Exception as e:
         print("Error: ", e)
         return return_error("There was a problem with accepting invite", 500)
