@@ -33,7 +33,7 @@ def send_email(event, context):
         return return_error("Bad request. Please input user email", 400)
 
     if check_sharing_info(event):
-        return return_error("This email has already been invited to join DocHub.", 400)
+        return return_error("This email already has an account or has been invited to join DocHub.", 400)
     subject = "Invitation For Sharing Cloud Storage"
     body = f"You have been invited to join DocHub!\n Proceed to http://localhost:4200/familyRegistration?send={sender64}&target={email64}&u={user64} to respond to the invite"
     message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
@@ -64,9 +64,23 @@ def check_sharing_info(event):
     table = dynamodb.Table(table_name)
     response = table.get_item(Key={'targetEmail': email})
     if 'Item' in response:
-        item = response.get("Item")
-        if(item.get("status") == "CREATED" or item.get("status") == "ACCEPTED"):
-            return True
+        return True
+    
+    params = {
+        'TableName': table_name,
+        'FilterExpression': '#attr1 = :val1',
+        'ExpressionAttributeNames': {
+            '#attr1': 'senderEmail'
+        },
+        'ExpressionAttributeValues': {
+            ':val1': sender
+        }
+    }
+
+    response = dynamodb.Table(table_name).scan(**params)
+    if 'Items' in response and len(response['Items']) > 0:
+        return True
+
     return False
 
 def save_sharing_info(event):
@@ -81,7 +95,7 @@ def save_sharing_info(event):
                 "targetEmail" : email,
                 "senderEmail": sender,
                 "senderUsername": username,
-                "status": "CREATED"
+                "status": "PENDING"
             }
         )
     except Exception as ex:

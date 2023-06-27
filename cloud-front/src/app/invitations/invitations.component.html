@@ -1,0 +1,30 @@
+<div class="wrapper">
+    <div class="close">
+        <button class="close-btn" mat-icon-button color="primary" (click)="close()">
+            <mat-icon style="scale: 2;" color="accent">close</mat-icon>
+        </button>
+    </div>
+    <div class="title">
+        <mat-icon style="scale: 1.4; margin-top: 1rem;">email</mat-icon>
+        <h1 style="margin-top: .5rem; padding-left: 1rem;">Invitations</h1>
+    </div>
+
+    <ul>
+       <li *ngFor="let invitation of invitations"> 
+        <div class="item-content">
+            <div class="text">
+                <span >{{invitation.targetEmail}}</span>
+                <span class="status">{{invitation.status}}</span>
+            </div>
+            
+            <button *ngIf="invitation.status != 'REVOKED'" class="disapprove" mat-icon-button color="accent" (click)="disapprove(invitation)">
+                <mat-icon>close</mat-icon>
+            </button>
+            <button *ngIf="invitation.status == 'REVOKED'" class="dissaprove" mat-icon-button color="accent" (click)="reapprove(invitation)">
+                <mat-icon>check</mat-icon>
+            </button>
+        </div>
+       </li> 
+    </ul>
+
+</div>
