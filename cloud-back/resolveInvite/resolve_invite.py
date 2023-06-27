@@ -39,7 +39,7 @@ def get_invite(event):
 
     if 'Items' in response and len(response['Items']) > 0:
         item = response['Items'][0]
-        if item.get("status") == {"S": "CREATED"}:
+        if item.get("status") == {"S": "PENDING"}:
             return item
         else:
             return None

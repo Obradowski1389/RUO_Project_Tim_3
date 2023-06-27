@@ -65,7 +65,7 @@ def check_sharing_info(event):
     response = table.get_item(Key={'targetEmail': email})
     if 'Item' in response:
         item = response.get("Item")
-        if(item.get("status") == "CREATED" or item.get("status") == "ACCEPTED"):
+        if(item.get("status") == "PENDING" or item.get("status") == "ACCEPTED"):
             return True
     return False
 
@@ -81,7 +81,7 @@ def save_sharing_info(event):
                 "targetEmail" : email,
                 "senderEmail": sender,
                 "senderUsername": username,
-                "status": "CREATED"
+                "status": "PENDING"
             }
         )
     except Exception as ex:
