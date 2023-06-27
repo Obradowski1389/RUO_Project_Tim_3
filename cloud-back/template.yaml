@@ -59,6 +59,47 @@ Resources:
               - ses:SendEmail
             Resource: '*'
 
+  SendSharingNotification:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: shareFileFolder/
+      Handler: share_file_folder.share_file_folder
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        SendEmail:
+          Type: Api
+          Properties:
+            Path: /shareFile
+            Method: post
+      Policies:
+        - Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+            Resource: '*'
+
+  DownloadFolder:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: downloadFolder/
+      Handler: download_folder.download_all_files
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        DownloadFile:
+          Type: Api
+          Properties:
+            Path: /downloadFolder
+            Method: post
+      Policies:
+        - S3FullAccessPolicy:
+            BucketName: files-cloud-back
+        - DynamoDBReadPolicy:
+            TableName: metadata-cloud-back
+  
   ResolveInvite:
     Type: AWS::Serverless::Function
     Properties:

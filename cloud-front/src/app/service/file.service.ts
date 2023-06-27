@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { FileCreateDTO, FileMoveDTO } from 'src/model/file';
+import { FileCreateDTO, FileMoveDTO, IFile } from 'src/model/file';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +41,13 @@ export class FileService {
 
   shareRepositoryInvitation(senderEmail: string, targetEmail: string) {
     return this.client.post<any>(environment.host + 'invite', { 'senderEmail': senderEmail, 'targetEmail': targetEmail});
+  }
+
+  shareFF(file: IFile, to: string) {
+    return this.client.post<any>(environment.host + 'shareFile', { 'id': file.id, 'isFolder': file.isFolder, 'to': to, 'from': localStorage.getItem('email')});
+  }
+
+  claimFF(id: string) {
+    return this.client.post<any>(environment.host + '', {});
   }
 }
