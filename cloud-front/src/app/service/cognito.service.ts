@@ -74,7 +74,7 @@ export class CognitoService {
   }
 
   signUpFamilyMember(userEmail: string, inviter: string){
-    return this.client.put<any>(environment.host + "acceptInvite", {"senderUsername": inviter, "targetEmail": userEmail})
+    return this.client.put<any>(environment.host + "acceptInvite", {"senderEmail": inviter, "targetEmail": userEmail})
   }
   
 }

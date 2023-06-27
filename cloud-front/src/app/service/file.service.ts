@@ -39,7 +39,7 @@ export class FileService {
     return this.client.post<any>(environment.host + 'notify', {'placeholder': placeholder, 'targetEmail': receiver})
   }
 
-  shareRepositoryInvitation(senderUsername: string, targetEmail: string) {
-    return this.client.post<any>(environment.host + 'invite', { 'senderUsername': senderUsername, 'targetEmail': targetEmail});
+  shareRepositoryInvitation(senderEmail: string, targetEmail: string) {
+    return this.client.post<any>(environment.host + 'invite', { 'senderEmail': senderEmail, 'targetEmail': targetEmail});
   }
 }

@@ -22,7 +22,7 @@ def return_error(message, statusCode):
 def send_email(event, context):
     body = json.loads(event['body'])
     email = body['targetEmail']
-    sender = body["senderUsername"]
+    sender = body["senderEmail"]
     if(email is None or sender is None):
         return return_error("Bad request. Please input user email", 400)
 
@@ -53,26 +53,26 @@ def send_email(event, context):
 def check_sharing_info(event):
     body = json.loads(event['body'])
     email = body['targetEmail']
-    sender = body["senderUsername"]
+    sender = body["senderEmail"]
 
     table = dynamodb.Table(table_name)
     response = table.get_item(Key={'targetEmail': email})
     if 'Item' in response:
         item = response.get("Item")
-        if(item.get("senderUsername") == sender):
+        if(item.get("senderEmail") == sender):
             return True
     return False
 
 def save_sharing_info(event):
     body = json.loads(event['body'])
     email = body['targetEmail']
-    sender = body["senderUsername"]
+    sender = body["senderEmail"]
     try:
         table = dynamodb.Table(table_name)
         table.put_item(
             Item= {
                 "targetEmail" : email,
-                "senderUsername": sender,
+                "senderEmail": sender,
                 "status": "CREATED",
                 "date": str(datetime.datetime.now())
             }

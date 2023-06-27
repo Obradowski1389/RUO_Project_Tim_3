@@ -20,14 +20,13 @@ export class AddFriendDialogComponent {
   constructor(public dialogRef: MatDialogRef<AddFriendDialogComponent>, private fileService: FileService, private router: Router, private cognitoService: CognitoService) {}
 
   async sendFriendRequest() {
-    const username = localStorage.getItem('username');
     const email = localStorage.getItem("email");
     const invite = this.fileForm.value.email;
     if(!this.fileForm.valid){
       alert("Email value is required!");
       return;
     }
-    if (username == null) {
+    if (email == null) {
       this.cancel();
       this.router.navigate(['login']);
       return;
@@ -40,7 +39,7 @@ export class AddFriendDialogComponent {
       return;
     }
 
-    this.fileService.shareRepositoryInvitation(username!, invite!).subscribe(
+    this.fileService.shareRepositoryInvitation(email!, invite!).subscribe(
       (res) => {
         console.log(res);
         this.dialogRef.close();
