@@ -16,28 +16,58 @@ export class MainPageComponent {
 
   allDocs : IFile[] = []
   filteredDocs : IFile[] = []
+  tempDocs: IFile[] = []
+  // filteredFamilyDocs: IFile[] = []
   isBackButtonDisabled = true
   showDiv = false
   isFileMode = true
   readOnly = false;
+  selfContent = true;
   currentPath : string = (localStorage.getItem('username') ?? '') + "/"
+  familyPath : string = (sessionStorage.getItem("familyUsername") ?? '') + "/";
 
   constructor(private cognitoService: CognitoService, private router: Router, private fileService: FileService, public dialog: MatDialog) {
 
     const username = sessionStorage.getItem("familyUsername");
     if(username != null){
       this.readOnly = true;
-      this.currentPath = username+"/";
+      fileService.getAll(this.familyPath).subscribe((res) => {
+        this.tempDocs = this.sortedList(res);
+        console.log(this.tempDocs.length);
+      })
     }
 
     fileService.getAll(this.currentPath).subscribe((res) => { 
       this.allDocs = this.sortedList(res)
       this.pathFileterList()
-    })
+    });
+  }
+
+  getSharedContent(){
+    
+    this.selfContent = false;
+    let temp = this.allDocs;
+    this.allDocs = this.tempDocs;
+    this.tempDocs = temp;
+
+    this.pathFileterList();
+    this.isBackButtonDisabled = false;
+    
   }
 
   //list manipulations
   pathFileterList() {
+    if(!this.selfContent){
+      this.filteredDocs = []
+      for(var i = 0; i < this.allDocs.length; i++) {
+        var currDoc : IFile = this.allDocs[i];
+        if(currDoc.name.startsWith(this.familyPath)){
+          var parts = currDoc.name.replace(this.familyPath, '').split('/')
+          if(parts.length == 1){ this.filteredDocs.push(currDoc);}
+        }
+      }
+      return;
+    }
     this.filteredDocs = []
     for(var i = 0; i < this.allDocs.length; i++) {
       var currDoc : IFile = this.allDocs[i];
@@ -61,12 +91,38 @@ export class MainPageComponent {
 
   //show folder
   openFolder(file: IFile) {
+    if(!this.selfContent){
+      this.familyPath = file.name + "/";
+      this.pathFileterList();
+      this.isBackButtonDisabled = false;
+      return;
+    }
     this.currentPath = file.name + '/'
     this.pathFileterList()
     this.isBackButtonDisabled = false
   }
 
   closeFolder() {
+    if(!this.selfContent){
+      var parts = this.familyPath.split('/')
+      var newPath : string = ''
+      for(var i = 0; i < parts.length - 2; i++) newPath += parts[i] + '/'
+      this.familyPath = newPath
+      this.pathFileterList()
+      if(this.familyPath.split('/').length == 1){
+        
+        this.familyPath = (sessionStorage.getItem("familyUsername") ?? '') + "/";
+        const temp = this.allDocs;
+        this.allDocs = this.tempDocs;
+        this.tempDocs = temp;
+        
+        this.selfContent = true;
+        this.isBackButtonDisabled = true;
+        this.pathFileterList();
+        
+      }
+      return;
+    }
     var parts = this.currentPath.split('/')
     var newPath : string = ''
     for(var i = 0; i < parts.length - 2; i++) newPath += parts[i] + '/'
@@ -204,6 +260,12 @@ export class MainPageComponent {
   }
 
   getForrmatedCurrentPath() {
+    if(!this.selfContent){
+      const parts = this.familyPath.split('/')
+      var path = 'Shared'
+      for(var i = 1; i < parts.length; i++) path += ' > ' + parts[i] 
+      return path.slice(0, path.length - 2)
+    }
     const parts = this.currentPath.split('/')
     var path = 'Root'
     for(var i = 1; i < parts.length; i++) path += ' > ' + parts[i] 

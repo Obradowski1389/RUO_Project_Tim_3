@@ -7,19 +7,24 @@
             <h1 style="font-family: 'Bruno Ace', cursive !important;">DocHub</h1>
         </div>
 
-        <button *ngIf="!readOnly" class="navbar-button" style="margin-bottom: 5px;" mat-raised-button color="primary" (click)="toggleDiv(true)">
+        <button class="navbar-button" style="margin-bottom: 5px;" mat-raised-button color="primary" (click)="toggleDiv(true)">
             <mat-icon>insert_drive_file</mat-icon>
             <p>ADD FILE</p>
         </button>
 
-        <button *ngIf="!readOnly" class="navbar-button" mat-button color="accent" (click)="toggleDiv(false)">
+        <button class="navbar-button" mat-button color="accent" (click)="toggleDiv(false)">
             <mat-icon>folder</mat-icon>
             <p>ADD FOLDER</p>
         </button>
         
-        <button *ngIf="!readOnly" class="navbar-button" mat-button color="accent" (click)="inviteFriend()">
+        <button class="navbar-button" mat-button color="accent" (click)="inviteFriend()">
           <mat-icon>group</mat-icon>
           <p>ADD MEMBER</p>
+        </button>
+
+        <button *ngIf="readOnly" class="navbar-button" mat-button color="accent" (click)="getSharedContent()">
+          <mat-icon>folder_shared</mat-icon>
+          <p>FAMILY CONTENT</p>
         </button>
         
         <button class="navbar-button" mat-button color="accent" (click)="logout()">
@@ -69,13 +74,13 @@
                 <mat-icon style="color: #364165; scale:1.3">more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button *ngIf="!readOnly" mat-menu-item (click)="modify(item)">
+                <button *ngIf="!readOnly || selfContent" mat-menu-item (click)="modify(item)">
                   <span>Modify</span>
                 </button>
-                <button *ngIf="!readOnly" mat-menu-item (click)="openMoveDialog(item)">
+                <button *ngIf="!readOnly || selfContent" mat-menu-item (click)="openMoveDialog(item)">
                   <span>Move</span>
                 </button>
-                <button *ngIf="!readOnly" mat-menu-item (click)="delete(item)">
+                <button *ngIf="!readOnly || selfContent" mat-menu-item (click)="delete(item)">
                   <span>Delete</span>
                 </button>
                 <button mat-menu-item (click)="download(item)">

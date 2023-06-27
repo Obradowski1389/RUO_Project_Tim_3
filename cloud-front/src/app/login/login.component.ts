@@ -37,7 +37,10 @@ export class LoginComponent {
 
         }, 
         error: (error: any) => {
-          console.log(error.error);
+          console.log(error);
+          if(error.status == 404)
+            this.router.navigate(['/home']);
+
         }
       });
 
