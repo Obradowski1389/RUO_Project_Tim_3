@@ -99,7 +99,10 @@ export class MainPageComponent {
   }
 
   download(file: IFile) {
-    this.fileService.download(file.name, file.type).subscribe((res) => {
+    console.log("123");
+    console.log(file.name);
+    console.log(file.id);
+    this.fileService.download(file.name).subscribe((res) => {
       const items = file.name.split('/');
       const lastItem = items[items.length - 1];
       this._download(res.value, lastItem, this.getMimeType('.' + file.type))

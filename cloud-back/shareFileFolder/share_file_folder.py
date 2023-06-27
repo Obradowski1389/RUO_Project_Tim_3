@@ -9,7 +9,7 @@ def share_file_folder(event, context):
         email = body['to']
         client = boto3.client("ses")
         subject = "Notification For Cloud Storage"
-        data = f"Files have been shared with you on DocHub by {body['from']}!\n Proceed to http://localhost:4200/claimData?target={body['id']}&isFolder={body['isFolder']} to respond"
+        data = f"Files have been shared with you on DocHub by {body['from']}!\n Proceed to http://localhost:4200/claimData?target={body['name']}&isFolder={body['isFolder']}&type={body['type']} to respond"
         message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": data}}}
         response = client.send_email(Source="isomidobradovic@gmail.com",
                                     Destination={"ToAddresses": [email]}, Message=message)

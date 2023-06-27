@@ -7,6 +7,7 @@ import { ConfirmSignupComponent } from './confirm-signup/confirm-signup.componen
 import { MainPageComponent } from './main-page/main-page.component';
 import { AuthGuardService } from './guard/auth.guard.service';
 import { FamilySignUpComponent } from './family-sign-up/family-sign-up.component';
+import { DownloadDataFromInviteComponent } from './download-data-from-invite/download-data-from-invite.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'confirmSignUp', component:ConfirmSignupComponent},
   {path: 'home', component:MainPageComponent, canActivate: [AuthGuardService]},
   {path: "familyRegistration", component: FamilySignUpComponent},
+  {path: 'claimData', component: DownloadDataFromInviteComponent},
   {path: '', pathMatch: 'full', redirectTo:'login'}
 ];
 

@@ -19,6 +19,7 @@ import { AddFriendDialogComponent } from './add-friend-dialog/add-friend-dialog.
 import { FamilySignUpComponent } from './family-sign-up/family-sign-up.component';
 import { RespondDialogComponent } from './respond-dialog/respond-dialog.component';
 import { ShareDataDialogComponent } from './share-data-dialog/share-data-dialog.component';
+import { DownloadDataFromInviteComponent } from './download-data-from-invite/download-data-from-invite.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ShareDataDialogComponent } from './share-data-dialog/share-data-dialog.
     AddFriendDialogComponent,
     FamilySignUpComponent,
     RespondDialogComponent,
-    ShareDataDialogComponent
+    ShareDataDialogComponent,
+    DownloadDataFromInviteComponent
   ],
   imports: [
     BrowserModule,

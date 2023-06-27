@@ -43,6 +43,7 @@ export class ShareDataDialogComponent {
     }
     
     this.dialogClosed.emit(invite!)
+    this.cancel();
   }
 
   cancel() {
