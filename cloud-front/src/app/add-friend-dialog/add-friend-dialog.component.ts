@@ -39,7 +39,7 @@ export class AddFriendDialogComponent {
       return;
     }
 
-    this.fileService.shareRepositoryInvitation(email!, invite!).subscribe(
+    this.fileService.shareRepositoryInvitation(email!, invite!, localStorage.getItem("username")!).subscribe(
       (res) => {
         console.log(res);
         this.dialogRef.close();

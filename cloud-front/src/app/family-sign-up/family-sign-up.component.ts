@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { IUser } from 'src/model/user';
 import { RespondDialogComponent } from '../respond-dialog/respond-dialog.component';
 import { CognitoService } from '../service/cognito.service';
+import { FileService } from '../service/file.service';
 
 @Component({
   selector: 'app-family-sign-up',
@@ -29,7 +30,7 @@ export class FamilySignUpComponent {
   targetEmail: string = "";
   senderEmail: string = "";
 
-  constructor(private router: Router, private cognitoService: CognitoService, private dialog: MatDialog) {
+  constructor(private router: Router, private fileService: FileService, private cognitoService: CognitoService,private dialog: MatDialog) {
     this.maxDate = new Date();
     
   }
@@ -38,8 +39,10 @@ export class FamilySignUpComponent {
     const urlParams = new URLSearchParams(window.location.search);
     const sender64 = urlParams.get('send');
     const target64 = urlParams.get("target");
+    const user64 = urlParams.get("u");
     if(sender64 != null) this.senderEmail = atob(sender64!);
     if(target64 != null) this.targetEmail = atob(target64!);
+    if(user64 != null) sessionStorage.setItem("familyUsername",atob(user64));
 
     const dialogRef = this.dialog.open(RespondDialogComponent, {data: {sender: this.senderEmail, target: this.targetEmail}});
     
@@ -54,7 +57,7 @@ export class FamilySignUpComponent {
     this.user.password = form.password!;
     this.user.username = form.username!;
 
-    this.cognitoService.resolveInvite(this.user.email, form.inviter!, true).subscribe({
+    this.fileService.resolveInvite(this.user.email, form.inviter!, true).subscribe({
       next: (val: any) => {
         console.log(val);
         this.cognitoService.signUp(this.user).then(()=>{
