@@ -29,7 +29,18 @@ export class LoginComponent {
       console.log(res);
       localStorage.setItem('username', res.username);
       localStorage.setItem('email', this.user.email);
-      this.router.navigate(['/home']);
+
+      this.fileService.getFamily(localStorage.getItem("email")!).subscribe({
+        next: (value: any) => {
+          sessionStorage.setItem("familyUsername", value.username);
+          this.router.navigate(['/home']);
+
+        }, 
+        error: (error: any) => {
+          console.log(error.error);
+        }
+      });
+
     }).catch((error)=>{
       alert(error);
     })

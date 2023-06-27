@@ -19,9 +19,17 @@ export class MainPageComponent {
   isBackButtonDisabled = true
   showDiv = false
   isFileMode = true
+  readOnly = false;
   currentPath : string = (localStorage.getItem('username') ?? '') + "/"
 
   constructor(private cognitoService: CognitoService, private router: Router, private fileService: FileService, public dialog: MatDialog) {
+
+    const username = sessionStorage.getItem("familyUsername");
+    if(username != null){
+      this.readOnly = true;
+      this.currentPath = username+"/";
+    }
+
     fileService.getAll(this.currentPath).subscribe((res) => { 
       this.allDocs = this.sortedList(res)
       this.pathFileterList()
@@ -184,7 +192,7 @@ export class MainPageComponent {
 
   //logout
   logout() {
-    this.cognitoService.signOut()
+    this.cognitoService.signOut();
     this.router.navigate(['/'])
   }
 

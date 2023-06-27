@@ -64,17 +64,14 @@ export class CognitoService {
   }
 
   signOut(): Promise<any> {
-    localStorage.clear()
+    localStorage.clear();
+    sessionStorage.clear();
     return Auth.signOut()
   }
 
   isLoggedIn(): boolean {
     if (localStorage.getItem('username') != null) return true
     return false
-  }
-
-  resolveInvite(userEmail: string, inviter: string, accept: boolean){
-    return this.client.put<any>(environment.host + "resolveInvite", {"senderEmail": inviter, "targetEmail": userEmail, "accept": accept})
   }
   
 }

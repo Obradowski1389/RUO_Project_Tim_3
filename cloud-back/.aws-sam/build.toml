@@ -82,4 +82,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["ResolveInvite"]
 
+[function_build_definitions.a78180a1-f8dc-4eeb-ad39-1b1089192cd1]
+codeuri = "C:\\Users\\danic\\Documents\\6_semestar\\Cloud\\RUO_Project_Tim_3\\cloud-back\\getFamilyMember"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "get_family_member.get_username"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["GetFamilyMember"]
+
 [layer_build_definitions]

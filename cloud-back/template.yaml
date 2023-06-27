@@ -83,6 +83,24 @@ Resources:
             Action:
               - ses:SendEmail
             Resource: '*'
+
+  GetFamilyMember:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getFamilyMember/
+      Handler: get_family_member.get_username
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        AcceptInvite:
+          Type: Api
+          Properties:
+            Path: /getFamily
+            Method: post
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Sharing
       
   CreateFileFunction:
     Type: AWS::Serverless::Function

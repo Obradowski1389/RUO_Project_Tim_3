@@ -39,7 +39,15 @@ export class FileService {
     return this.client.post<any>(environment.host + 'notify', {'placeholder': placeholder, 'targetEmail': receiver})
   }
 
-  shareRepositoryInvitation(senderEmail: string, targetEmail: string) {
-    return this.client.post<any>(environment.host + 'invite', { 'senderEmail': senderEmail, 'targetEmail': targetEmail});
+  shareRepositoryInvitation(senderEmail: string, targetEmail: string, username: string) {
+    return this.client.post<any>(environment.host + 'invite', { 'senderEmail': senderEmail, 'targetEmail': targetEmail, "username": username});
+  }
+
+  resolveInvite(userEmail: string, inviter: string, accept: boolean){
+    return this.client.put<any>(environment.host + "resolveInvite", {"senderEmail": inviter, "targetEmail": userEmail, "accept": accept})
+  }
+
+  getFamily(email: string){
+    return this.client.post<any>(environment.host + "getFamily", {"email": email});
   }
 }
