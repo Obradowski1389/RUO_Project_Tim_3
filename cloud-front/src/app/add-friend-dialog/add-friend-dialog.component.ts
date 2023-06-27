@@ -20,10 +20,24 @@ export class AddFriendDialogComponent {
 
   sendFriendRequest() {
     const username = localStorage.getItem('username');
+    const email = localStorage.getItem("email");
+    if(!this.fileForm.valid){
+      alert("Email value is required!");
+      return;
+    }
     if (username == null) {
       this.cancel();
       this.router.navigate(['login']);
+      return;
     }
+
+    if(email != null && email == this.fileForm.value.email!)
+    {
+      this.cancel();
+      alert("You cannot send an invitation to yourself");
+      return;
+    }
+
     this.fileService.shareRepositoryInvitation(username!, this.fileForm.value.email!).subscribe(
       (res) => {
         console.log(res);
@@ -31,6 +45,12 @@ export class AddFriendDialogComponent {
         alert("Request successfully sent");
       }, (error) => {
         console.log(error);
+        if(error.status == 0){
+          alert("Unknown error occured");
+        }else if(error.status == 500 || error.status == 400){
+          alert(error.error.message);
+          this.cancel();
+        }
       }
     )
   }

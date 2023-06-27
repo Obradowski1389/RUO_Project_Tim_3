@@ -51,6 +51,8 @@ Resources:
       Policies:
         - DynamoDBWritePolicy:
             TableName: Sharing
+        - DynamoDBReadPolicy:
+            TableName: Sharing
         - Statement:
           - Effect: Allow
             Action:

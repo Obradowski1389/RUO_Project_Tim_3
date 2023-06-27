@@ -1,5 +1,6 @@
 import json
 import boto3
+import datetime
 
 table_name = "Sharing"
 dynamodb = boto3.resource('dynamodb')
@@ -18,18 +19,6 @@ def return_error(message, statusCode):
         }),
     }
 
-
-def get_user(username):
-    response = cognito.admin_get_user(
-        UserPoolId='eu-central-1_a1fZUXk6x',
-        Username=username
-    )
-
-    user_attributes = response['UserAttributes']
-    print('User:', user_attributes)
-    return user_attributes
-
-
 def send_email(event, context):
     body = json.loads(event['body'])
     email = body['targetEmail']
@@ -37,8 +26,10 @@ def send_email(event, context):
     if(email is None or sender is None):
         return_error("Bad request. Please input user email", 400)
 
+    if check_sharing_info(event):
+        return return_error("You already sent a request to this email", 400)
     subject = "Invitation For Sharing Cloud Storage"
-    body = f"You have been invited to join DocHub by {sender}!\n Proceed to http://localhost:4200/familyRegistration to respond to the invite"
+    body = "You have been invited to join DocHub!\n Proceed to http://localhost:4200/familyRegistration to respond to the invite"
     message = {"Subject": {"Data": subject}, "Body": {"Html": {"Data": body}}}
     try:
 
@@ -59,20 +50,33 @@ def send_email(event, context):
         print("Error:", e)
         return_error("Error: Failed to send request. Please try again later.", 500)
 
+def check_sharing_info(event):
+    body = json.loads(event['body'])
+    email = body['targetEmail']
+    sender = body["senderUsername"]
+
+    table = dynamodb.Table(table_name)
+    response = table.get_item(Key={'targetEmail': email})
+    if 'Item' in response:
+        item = response.get("Item")
+        if(item.get("senderUsername") == sender):
+            return True
+    return False
+
 def save_sharing_info(event):
     body = json.loads(event['body'])
     email = body['targetEmail']
     sender = body["senderUsername"]
     try:
         table = dynamodb.Table(table_name)
-        print("awofijofijasf")
         table.put_item(
             Item= {
                 "targetEmail" : email,
                 "senderUsername": sender,
-                "status": "CREATED"
+                "status": "CREATED",
+                "date": str(datetime.datetime.now())
             }
         )
     except Exception as ex:
         print("Error: ", ex)
-        return_error("Error: wiriting in DB", 500)
+        return return_error("Error: wiriting in DB", 500)
