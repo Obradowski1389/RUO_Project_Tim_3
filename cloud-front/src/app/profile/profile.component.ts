@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CognitoService } from 'src/cognito.service';
 import { IUser } from 'src/model/user';
+import { CognitoService } from '../service/cognito.service';
 
 @Component({
   selector: 'app-profile',

@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { CognitoService } from 'src/cognito.service';
 import { FileService } from '../service/file.service';
 import { FileMoveDTO, IFile } from 'src/model/file';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { ModifyDataDialogComponent } from '../modify-data-dialog/modify-data-dialog.component';
+import { AddFriendDialogComponent } from '../add-friend-dialog/add-friend-dialog.component';
+import { CognitoService } from '../service/cognito.service';
 
 @Component({
   selector: 'app-main-page',
@@ -76,11 +77,24 @@ export class MainPageComponent {
   //delete
   delete(file: IFile) {
     this.fileService.delete(file.id, file.name, file.isFolder).subscribe((res) => { 
-      console.log(res)
+      console.log(res);
+      
+      const items = file.name.split('/');
+      const lastItem = items[items.length - 1];
+      this.fileService.sendNotification(localStorage.getItem('email')!, lastItem + " - Successfully Deleted").subscribe(
+        {next: (res) => console.log(res)});
       const index = this.allDocs.indexOf(file)
       if (index !== -1)  this.allDocs.splice(index, 1)
       this.pathFileterList()
     })
+  }
+
+  inviteFriend(): void {
+    const dialogRef = this.dialog.open(AddFriendDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result:', result);
+    });
   }
 
   download(file: IFile) {

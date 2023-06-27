@@ -18,6 +18,72 @@ Globals:
 
 Resources:
 
+  SendNotification:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sendNotification/
+      Handler: send_notification.send_notification
+      Runtime: python3.9
+      Role: arn:aws:iam::070424787807:role/AmazonSESFULLAccess
+      Architectures:
+        - x86_64
+      Events:
+        SendInvite:
+          Type: Api
+          Properties:
+            Path: /notify
+            Method: post
+
+  SendSharingInvite:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: sendInvite/
+      Handler: send_invite.send_email
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        SendEmail:
+          Type: Api
+          Properties:
+            Path: /invite
+            Method: post
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: Sharing
+        - DynamoDBReadPolicy:
+            TableName: Sharing
+        - Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+            Resource: '*'
+
+  ResolveInvite:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: resolveInvite/
+      Handler: resolve_invite.resolve_invite
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        AcceptInvite:
+          Type: Api
+          Properties:
+            Path: /resolveInvite
+            Method: put
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: Sharing
+        - DynamoDBReadPolicy:
+            TableName: Sharing
+        - Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+            Resource: '*'
+      
   CreateFileFunction:
     Type: AWS::Serverless::Function
     Properties:

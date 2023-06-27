@@ -34,4 +34,12 @@ export class FileService {
   modify(id: string, name: string, description: string, tags: string[], isFolder: boolean) {
     return this.client.put<any>(environment.host + 'update', { 'id': id, 'name': name, 'description': description, 'isFolder': isFolder, 'tags': tags})
   }
+
+  sendNotification(receiver: string, placeholder: string) {
+    return this.client.post<any>(environment.host + 'notify', {'placeholder': placeholder, 'targetEmail': receiver})
+  }
+
+  shareRepositoryInvitation(senderEmail: string, targetEmail: string) {
+    return this.client.post<any>(environment.host + 'invite', { 'senderEmail': senderEmail, 'targetEmail': targetEmail});
+  }
 }

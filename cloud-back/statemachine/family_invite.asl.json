@@ -1,0 +1,84 @@
+{
+    "Comment": "Step Function For Inviting Friends",
+    "StartAt": "CreateRequest",
+    "States": {
+        "CreateRequest": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:eu-central-1:070424787807:function:cloud-back-SendSharingInvite-HKi2UofWMD55",
+            "Next": "WaitState"
+        },
+        "WaitState": {
+          "Type": "Wait",
+          "Seconds": 30,
+          "Next": "InvitationResponse"
+        },
+        "InvitationResponse": {
+            "Type": "Choice",
+            "Choices": [
+                {
+                    "Variable": "$.foo",
+                    "BooleanEquals": true,
+                    "Next": "AcceptedInvitation"
+                },
+                {
+                    "Variable": "$.foo",
+                    "BooleanEquals": false,
+                    "Next": "DeclinedInvitation"
+                }
+            ],
+            "Default": "WaitState"
+        },
+        "AcceptedInvitation": {
+            "Type": "Task",
+            "Resource": "",
+            "Next": "WaitForRegistration"
+        },
+        "DeclinedInvitation": {
+            "Type": "Task",
+            "Resource": "",
+            "End": true
+        },
+        "WaitForRegistration": {
+          "Type": "Wait",
+          "Seconds": 30,
+          "Next": "IsRegistered"
+        },
+        "IsRegistered": {
+            "Type":"Choice",
+            "Choices": [
+                {
+                    "Variable": "$.bar",
+                    "BooleanEquals": true,
+                    "Next": "NotifySender"
+                }
+            ],
+            "Default": "WaitForRegistration"
+        },
+        "NotifySender": {
+            "Type": "Task",
+            "Resource": "",
+            "Next": "WaitForVerification"
+        },
+        "WaitForVerification": {
+            "Type": "Wait",
+            "Seconds": 30,
+            "Next": "IsVerified"
+        },
+        "IsVerified": {
+            "Type":"Choice",
+            "Choices": [
+                {
+                    "Variable": "$.bar",
+                    "BooleanEquals": true,
+                    "Next": "ShareContent"
+                }
+            ],
+            "Default": "WaitForVerification"
+        },
+        "ShareContent": {
+            "Type": "Task",
+            "Resource": "",
+            "End": true
+        }
+    }
+}

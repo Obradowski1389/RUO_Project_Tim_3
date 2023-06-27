@@ -122,6 +122,7 @@ export class AddModifyComponent {
     }
 
     this.fileService.create(file).subscribe({next: (res) => console.log(res)})
+    this.fileService.sendNotification(localStorage.getItem('email')!, "File: " + this.fileName + " - Successfully Created").subscribe({next: (res) => console.log(res)});
     this.buttonClicked.emit()
     this.fileDTO.emit(fromFileCreateDTOToIFile(file))
     this.clearForms()
@@ -150,6 +151,7 @@ export class AddModifyComponent {
     }
     
     this.fileService.create(folder).subscribe({next: (res) => console.log(res)})
+    this.fileService.sendNotification(localStorage.getItem('email')!, "Folder: " + formValues.name + " - Successfully Created").subscribe({next: (res) => console.log(res)});
     this.buttonClicked.emit()
     this.fileDTO.emit(fromFileCreateDTOToIFile(folder))
     this.clearForms()
