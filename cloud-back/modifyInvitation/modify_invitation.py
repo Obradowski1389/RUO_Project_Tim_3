@@ -30,6 +30,7 @@ def get_invite(event):
     else:
         return None
     
+    
 def update_invite_info(event):
     body = json.loads(event['body'])
     email = body['targetEmail']
@@ -40,7 +41,6 @@ def update_invite_info(event):
     expression_attribute_names = {'#attr': "status"}
     if(revoke):
         expression_attribute_values = {':val': {'S': "REVOKED"}}
-        # TODO send email
     else:
         expression_attribute_values = {":val": {'S': "ACCEPTED"}}
     condition_expression = '#condAttr = :condVal'

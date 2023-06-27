@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { IInvitation } from 'src/model/invitation';
 import { FileService } from '../service/file.service';
 import { InvitationsService } from '../service/invitations.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-invitations',
@@ -17,7 +18,7 @@ export class InvitationsComponent {
     this.buttonClicked.emit();
   }
 
-  constructor(private invitationsService: InvitationsService){
+  constructor(private invitationsService: InvitationsService, private fileService: FileService){
     invitationsService.getInvitations().subscribe({
       next: (value: IInvitation[]) => {
         this.invitations = value;
@@ -34,6 +35,15 @@ export class InvitationsComponent {
       next: (value: any) => {
         invitation.status="REVOKED";
         console.log(value);
+        this.fileService.sendNotification(invitation.targetEmail, "Your right to access family content has been revoked.").subscribe({
+          next: (val: any) => {
+            console.log(val);
+          },
+          error: (error: any) => {
+            console.log(error.error);
+          }
+        })
+        
       },
       error: (error: any) => {
         console.log(error);
@@ -46,6 +56,15 @@ export class InvitationsComponent {
       next: (value: any) => {
         invitation.status = "ACCEPTED";
         console.log(value);
+
+        this.fileService.sendNotification(invitation.targetEmail, "Your right to access family content has been restored.").subscribe({
+          next: (val: any) => {
+            console.log(val);
+          },
+          error: (error: any) => {
+            console.log(error.error);
+          }
+        })
       },
       error: (error: any) => {
         console.log(error);
