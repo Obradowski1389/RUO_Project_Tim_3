@@ -3,7 +3,7 @@
         <h1>Create a new account</h1>
         <form #form="ngForm" class="form" [formGroup]="signUpForm" (ngSubmit)="signUp()">
             <mat-form-field class="form-input" appearance="outline">
-                <mat-label>Inviter Username</mat-label>
+                <mat-label>Inviter Email</mat-label>
                 <input matInput type="text" name="inviter" formControlName="inviter"/>
             </mat-form-field>
             <div class="input-wrapper">

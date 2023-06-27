@@ -24,7 +24,7 @@ def send_email(event, context):
     email = body['targetEmail']
     sender = body["senderUsername"]
     if(email is None or sender is None):
-        return_error("Bad request. Please input user email", 400)
+        return return_error("Bad request. Please input user email", 400)
 
     if check_sharing_info(event):
         return return_error("You already sent a request to this email", 400)
@@ -48,7 +48,7 @@ def send_email(event, context):
         }
     except Exception as e:
         print("Error:", e)
-        return_error("Error: Failed to send request. Please try again later.", 500)
+        return return_error("Error: Failed to send request. Please try again later.", 500)
 
 def check_sharing_info(event):
     body = json.loads(event['body'])
@@ -79,4 +79,4 @@ def save_sharing_info(event):
         )
     except Exception as ex:
         print("Error: ", ex)
-        return return_error("Error: wiriting in DB", 500)
+        raise ex

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Amplify, Auth } from 'aws-amplify';
 import { environment } from '../../environments/environment';
 import { IUser } from '../../model/user';
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class CognitoService {
 
-  constructor() { 
+  constructor(private client: HttpClient) { 
     Amplify.configure({
       Auth:environment.cognito
     });
@@ -17,7 +18,25 @@ export class CognitoService {
 
     return Auth.signUp({
       username: user.email,
-      password: user.password
+      password: user.password,
+      // attributes: [
+      //   {
+      //     name: 'name',
+      //     value: user.name
+      //   },
+      //   {
+      //     name: 'surname',
+      //     value: user.surname
+      //   },
+      //   {
+      //     name: 'email',
+      //     value: user.email
+      //   },
+      //   {
+      //     name: "birthday",
+      //     value: new Date(user.birthday).toISOString()
+      //   },
+      // ]
     });
   }
 
@@ -37,7 +56,6 @@ export class CognitoService {
         return null; 
       });
   }
-  
 
   updateUser(user: IUser): Promise<any> {
     return Auth.currentUserPoolUser().then((cognitoUser: any)=>{
@@ -53,6 +71,10 @@ export class CognitoService {
   isLoggedIn(): boolean {
     if (localStorage.getItem('username') != null) return true
     return false
+  }
+
+  signUpFamilyMember(userEmail: string, inviter: string){
+    return this.client.put<any>(environment.host + "acceptInvite", {"senderUsername": inviter, "targetEmail": userEmail})
   }
   
 }

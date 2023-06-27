@@ -58,9 +58,32 @@ Resources:
             Action:
               - ses:SendEmail
             Resource: '*'
-          
-        
 
+  AcceptInvite:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: acceptInvite/
+      Handler: accept_invite.accept_invite
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        AcceptInvite:
+          Type: Api
+          Properties:
+            Path: /acceptInvite
+            Method: put
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: Sharing
+        - DynamoDBReadPolicy:
+            TableName: Sharing
+        - Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+            Resource: '*'
+      
   CreateFileFunction:
     Type: AWS::Serverless::Function
     Properties:

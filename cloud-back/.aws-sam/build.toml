@@ -73,4 +73,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["ModifyFileFunction"]
 
+[function_build_definitions.955817ff-071a-4457-83f6-048b5b00a36d]
+codeuri = "C:\\Users\\danic\\Documents\\6_semestar\\Cloud\\RUO_Project_Tim_3\\cloud-back\\acceptInvite"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "accept_invite.accept_invite"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["AcceptInvite"]
+
 [layer_build_definitions]

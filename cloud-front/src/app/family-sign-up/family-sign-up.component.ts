@@ -45,14 +45,20 @@ export class FamilySignUpComponent {
     this.user.password = form.password!;
     this.user.username = form.username!;
 
-    this.cognitoService.signUp(this.user).then(()=>{
-      this.router.navigate(['confirmSignUp']);
-// Acc created
-    }).catch((error)=>{
-      alert(error);
-    })
-
-
+    this.cognitoService.signUpFamilyMember(this.user.email, form.inviter!).subscribe({
+      next: (val: any) => {
+        console.log(val);
+        this.cognitoService.signUp(this.user).then(()=>{
+          this.router.navigate(["confirmSignUp"]);
+        }).catch((error)=>{
+          alert(error);
+        })
+      },
+      error: (error: any) => {
+        console.log(error);
+      }
+    });
+    
   }
 }
 

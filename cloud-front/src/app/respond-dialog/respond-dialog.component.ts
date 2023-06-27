@@ -16,7 +16,6 @@ export class RespondDialogComponent {
   ) { }
 
   accept(){
-    // TODO accept invitation notification
     this.dialogRef.close();
   }
 
