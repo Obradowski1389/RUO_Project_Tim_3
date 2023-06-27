@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { FileCreateDTO, FileMoveDTO } from 'src/model/file';
+import { FileCreateDTO, FileMoveDTO, IFile } from 'src/model/file';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +27,8 @@ export class FileService {
     return this.client.put<any>(environment.host + 'delete', {'id' : id, 'name' : name, 'isFolder': isFolder})
   }
 
-  download(name: string, type: string){
-    return this.client.post<any>(environment.host + 'download', {'name': name, 'type': type})
+  download(name: string){
+    return this.client.post<any>(environment.host + 'download', {'name': name})
   }
 
   modify(id: string, name: string, description: string, tags: string[], isFolder: boolean) {
@@ -49,5 +49,17 @@ export class FileService {
 
   getFamily(email: string){
     return this.client.post<any>(environment.host + "getFamily", {"email": email});
+  }
+
+  shareFF(file: IFile, to: string) {
+    return this.client.post<any>(environment.host + 'shareFile', { 'name': file.name, 'type': file.type, 'isFolder': file.isFolder, 'to': to, 'from': localStorage.getItem('email')});
+  }
+
+  claimFF(id: string) {
+    return this.client.post<any>(environment.host + '', {});
+  }
+
+  downloadDataFromInvite() {
+
   }
 }

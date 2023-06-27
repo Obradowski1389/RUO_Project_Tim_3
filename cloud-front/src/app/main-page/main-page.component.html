@@ -83,6 +83,9 @@
                 <button *ngIf="!readOnly || selfContent" mat-menu-item (click)="delete(item)">
                   <span>Delete</span>
                 </button>
+                <button mat-menu-item (click)="share(item)">
+                  <span>Share</span>
+                </button>
                 <button mat-menu-item (click)="download(item)">
                   <span>Download</span>
                 </button>
@@ -110,6 +113,9 @@
               <mat-menu #menu="matMenu">
                 <button  mat-menu-item (click)="delete(item)">
                   <span>Delete</span>
+                </button>
+                <button mat-menu-item (click)="share(item)">
+                  <span>Share</span>
                 </button>
               </mat-menu>
             </div>

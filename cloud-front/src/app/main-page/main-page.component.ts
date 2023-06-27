@@ -6,6 +6,7 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog
 import { ModifyDataDialogComponent } from '../modify-data-dialog/modify-data-dialog.component';
 import { AddFriendDialogComponent } from '../add-friend-dialog/add-friend-dialog.component';
 import { CognitoService } from '../service/cognito.service';
+import { ShareDataDialogComponent } from '../share-data-dialog/share-data-dialog.component';
 
 @Component({
   selector: 'app-main-page',
@@ -162,7 +163,10 @@ export class MainPageComponent {
   }
 
   download(file: IFile) {
-    this.fileService.download(file.name, file.type).subscribe((res) => {
+    console.log("123");
+    console.log(file.name);
+    console.log(file.id);
+    this.fileService.download(file.name).subscribe((res) => {
       const items = file.name.split('/');
       const lastItem = items[items.length - 1];
       this._download(res.value, lastItem, this.getMimeType('.' + file.type))
@@ -195,6 +199,22 @@ export class MainPageComponent {
     
     const blob = new Blob([uint8Array], { type });
     return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+  }
+
+  share(file: IFile) {
+    const dialogRef = this.dialog.open(ShareDataDialogComponent);
+    // Subscribe to the dialogClosed event
+    dialogRef.componentInstance.dialogClosed.subscribe(to => {
+      console.log('Dialog result:', to);
+      if(to == null) {
+        return;
+      }
+      this.fileService.shareFF(file, to).subscribe((res) => {
+        alert("Successfully shared");
+      }, (err) => {
+        alert("Error while trying to share data.")
+      });
+    });
   }
 
   modify(file: IFile){
