@@ -100,4 +100,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["DownloadFolder"]
 
+[function_build_definitions.cfb4ccaf-6df5-4d52-b971-ff9af04cd15f]
+codeuri = "D:\\Fax\\c\\RUO_Project_Tim_3\\cloud-back\\getFamilyMember"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "get_family_member.get_username"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["GetFamilyMember"]
+
 [layer_build_definitions]
