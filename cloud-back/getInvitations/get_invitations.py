@@ -21,7 +21,7 @@ def get_invitations(event, context):
     response = dynamodb.Table(table_name).scan(**params)
     print("Response: ", str(response))
 
-    if 'Items' in response and len(response['Items']) > 0:
+    if 'Items' in response:
         return {
         "statusCode": 200,
         "headers": {
