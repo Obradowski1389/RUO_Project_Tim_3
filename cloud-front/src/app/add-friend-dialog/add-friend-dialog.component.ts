@@ -47,11 +47,12 @@ export class AddFriendDialogComponent {
         alert("Request successfully sent");
       }, (error) => {
         console.log(error);
-        if(error.status == 0){
-          alert("Unknown error occured");
-        }else if(error.status == 500 || error.status == 400){
+        if(error.status == 500 || error.status == 400){
           alert(error.error.message);
           this.cancel();
+        }else{
+          this.dialogRef.close();
+          alert("Request successfully sent");
         }
       }
     )
