@@ -33,7 +33,7 @@ export class MainPageComponent {
 
     const username = sessionStorage.getItem("familyUsername");
     if(username != null){
-      this.readOnly = true;
+      // this.readOnly = true;
       fileService.getAll(this.familyPath).subscribe((res) => {
         this.tempDocs = this.sortedList(res);
         console.log(this.tempDocs.length);

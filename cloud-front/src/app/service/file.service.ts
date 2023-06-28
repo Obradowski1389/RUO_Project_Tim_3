@@ -44,6 +44,8 @@ export class FileService {
   }
 
   shareFF(file: IFile, to: string) {
+    console.log("sender", localStorage.getItem('email'))
+    console.log("to", to)
     return this.client.post<any>(environment.host + 'shareFile', { 'name': file.name, 'type': file.type, 'isFolder': file.isFolder, 'to': to, 'from': localStorage.getItem('email')});
   }
 
@@ -53,5 +55,9 @@ export class FileService {
 
   checkValidDownloadLink(id:string, name:string) {
     return this.client.post<any>(environment.host + "checkIsLinkValid", { "id": id, "name": name});
+  }
+
+  invalidateLink(linkId: string) {
+    return this.client.post<any>(environment.host + "invalidateLink", { 'id': linkId})
   }
 }

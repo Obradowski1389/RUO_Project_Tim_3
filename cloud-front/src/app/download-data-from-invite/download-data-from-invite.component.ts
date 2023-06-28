@@ -37,7 +37,7 @@ export class DownloadDataFromInviteComponent {
           console.log(res);
           const items = id!.split('/');
           const lastItem = items[items.length - 1];
-          this._download(res.value, lastItem, this.getMimeType('.' + type))
+          this._download(res.value, lastItem, this.getMimeType('.' + type));
         }, (err) => {
           console.log(err);
         })
@@ -50,6 +50,7 @@ export class DownloadDataFromInviteComponent {
       console.log(err);
       alert("Link Is Not Valid");
     });
+    this.router.navigate(['/']);
   }
 
   parseFolderDownload(filesAndTypes: any, root: string) {

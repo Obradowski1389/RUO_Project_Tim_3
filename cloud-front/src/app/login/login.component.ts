@@ -26,7 +26,7 @@ export class LoginComponent {
     this.user.email = form.email!;
     this.user.password = form.password!;
     this.cognitoService.login(this.user).then((res)=>{
-      console.log(res);
+      console.log(res.username, "   ", this.user.email);
       localStorage.setItem('username', res.username);
       localStorage.setItem('email', this.user.email);
 

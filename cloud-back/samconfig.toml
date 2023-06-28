@@ -17,10 +17,11 @@ lint = true
 capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
-s3_prefix = "cloud-back"
+s3_prefix = "y"
 region = "eu-central-1"
 image_repositories = []
 disable_rollback = true
+stack_name = "y"
 
 [default.package.parameters]
 resolve_s3 = true

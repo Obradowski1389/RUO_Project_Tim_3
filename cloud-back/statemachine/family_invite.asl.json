@@ -31,7 +31,7 @@
                     "ErrorEquals": [
                         "States.TaskFailed"
                     ],
-                    "IntervalSeconds": 100,
+                    "IntervalSeconds": 30,
                     "MaxAttempts": 10,
                     "BackoffRate": 2
                 }
@@ -45,9 +45,13 @@
                     "Variable": "$.status",
                     "BooleanEquals": true,
                     "Next": "NotifyAccepted"
+                },{
+                    "Variable": "$.status",
+                    "BooleanEquals":false,
+                    "Next": "NotifyDeclined"
                 }
             ],
-            "Default": "NotifyDeclined"
+            "Default": "UnsucessfulInvitation"
         },
         "NotifyAccepted":{
             "Type": "Task",

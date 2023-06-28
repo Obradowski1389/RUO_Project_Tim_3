@@ -163,4 +163,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["ModifyFileFunction"]
 
+[function_build_definitions.2efd0a82-5d46-4c71-ba5c-7bf4a3ac04a3]
+codeuri = "D:\\Fax\\c\\RUO_Project_Tim_3\\cloud-back\\invalidateLink"
+runtime = "python3.9"
+architecture = "x86_64"
+handler = "invalidate_download_link.invalidate_download_link"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["InvalidateDownloadLink"]
+
 [layer_build_definitions]
