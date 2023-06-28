@@ -13,7 +13,8 @@ def get_sharing_info(event):
     response = table.get_item(Key={'targetEmail': email})
     print(response)
     if 'Item' in response:
-        return response["Item"]
+        if(response["Item"]["status"] == "ACCEPTED"):
+            return response["Item"]
     return None
 
 def get_username(event, context):

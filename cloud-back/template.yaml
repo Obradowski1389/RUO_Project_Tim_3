@@ -142,7 +142,45 @@ Resources:
       Policies:
         - DynamoDBReadPolicy:
             TableName: Sharing
-      
+  
+  GetInvitations:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getInvitations/
+      Handler: get_invitations.get_invitations
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        SendEmail:
+          Type: Api
+          Properties:
+            Path: /getInvitations/{username}
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Sharing   
+
+  ModifyInvitation:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: modifyInvitation/
+      Handler: modify_invitation.modify_invitation
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        SendEmail:
+          Type: Api
+          Properties:
+            Path: /modifyInvitation
+            Method: put
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Sharing 
+        - DynamoDBWritePolicy:
+            TableName: Sharing
+
   CreateFileFunction:
     Type: AWS::Serverless::Function
     Properties:

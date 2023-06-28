@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CognitoService } from '../service/cognito.service';
 import { FileService } from '../service/file.service';
+import { InvitationsService } from '../service/invitations.service';
 
 @Component({
   selector: 'app-respond-dialog',
@@ -18,7 +19,7 @@ export class RespondDialogComponent {
     public dialogRef: MatDialogRef<RespondDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
-    private fileService: FileService
+    private invitationsService: InvitationsService
   ) {
     this.sender = data.sender;
     this.target = data.target;
@@ -29,7 +30,7 @@ export class RespondDialogComponent {
   }
 
   decline(){
-    this.fileService.resolveInvite(this.target, this.sender, false).subscribe({
+    this.invitationsService.resolveInvite(this.target, this.sender, false).subscribe({
       next: (value: any) => {
         this.dialogRef.close();
         alert("Sorry to see you leave!");

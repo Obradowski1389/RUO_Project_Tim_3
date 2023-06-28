@@ -18,9 +18,9 @@ export class MainPageComponent {
   allDocs : IFile[] = []
   filteredDocs : IFile[] = []
   tempDocs: IFile[] = []
-  // filteredFamilyDocs: IFile[] = []
   isBackButtonDisabled = true
   showDiv = false
+  showInvitations = false;
   isFileMode = true
   readOnly = false;
   selfContent = true;
@@ -275,14 +275,20 @@ export class MainPageComponent {
   //helpers
   toggleDiv(isFile: boolean): void {
     this.showDiv = true
+    this.showInvitations = false;
     if(isFile) this.isFileMode = true
     else this.isFileMode = false
+  }
+
+  seeFamily(){
+    this.showInvitations = true;
+    this.showDiv = false;
   }
 
   getForrmatedCurrentPath() {
     if(!this.selfContent){
       const parts = this.familyPath.split('/')
-      var path = 'Shared'
+      var path = 'Family'
       for(var i = 1; i < parts.length; i++) path += ' > ' + parts[i] 
       return path.slice(0, path.length - 2)
     }
