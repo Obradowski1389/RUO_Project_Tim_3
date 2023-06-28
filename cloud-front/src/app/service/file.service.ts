@@ -47,11 +47,7 @@ export class FileService {
     return this.client.post<any>(environment.host + 'shareFile', { 'name': file.name, 'type': file.type, 'isFolder': file.isFolder, 'to': to, 'from': localStorage.getItem('email')});
   }
 
-  claimFF(id: string) {
-    return this.client.post<any>(environment.host + '', {});
-  }
-
-  downloadDataFromInvite() {
-
+  downloadFolder(id: string) {
+    return this.client.post<any>(environment.host + 'downloadFolder', { 'id': id });
   }
 }

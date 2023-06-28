@@ -1,30 +1,54 @@
+from typing import Any
 import boto3
 import json
 import base64
+from datetime import datetime
+from decimal import Decimal
 
 
 bucket_name = 'files-cloud-back'
+table_name = 'metadata-cloud-back'
 s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 table_name = 'metadata-cloud-back'
 
 
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
+
+class CustomEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (datetime, Decimal)):
+            return str(obj)
+        return super().default(obj)
+
+
+
 def download_all_files(event, context):
     body = json.loads(event['body'])
-    folder_id = body['id']
-    files = get_files_in_folder(folder_id)
-    downloaded_files = []
-    
-    for file in files:
-        try:
-            response = s3.get_object(Bucket=bucket_name, Key=file['name'])
-            value_encoded = base64.b64encode(response['Body'].read()).decode('utf-8')
-            downloaded_files.append({
-                'name': file['name'],
-                'value': value_encoded
-            })
-        except Exception as e:
-            print("Error downloading file:", file['name'], "-", e)
+    try:
+        folder_id, fn = body['id'].split('/', 1)
+        folder_id += '/'
+
+        all_files = s3.list_objects_v2(Bucket=bucket_name, Prefix=folder_id)
+
+        for_download = []
+        for obj in all_files['Contents']:
+            if fn in obj['Key']:
+                for_download.append(obj['Key'])
+
+        # for_download = json.dumps(for_download, cls=DateTimeEncoder)
+        dict = {}
+        for fn in for_download:
+            type = get_type_from_dynamo(fn, folder_id)
+            dict[fn] = type
+
+    except Exception as e:
+        print("Error downloading file:", e)
     
     return {
         "statusCode": 200,
@@ -32,17 +56,23 @@ def download_all_files(event, context):
             "Access-Control-Allow-Origin": "*"
         },
         "body": json.dumps({
-            "files": downloaded_files,
-            "message": "Successfully downloaded all files from the folder."
-        }),
+            "files": dict,
+            "message": f"Successfully downloaded all file names for folder."
+        }, cls=CustomEncoder),
     }
 
 
-def get_files_in_folder(folder_id):
-    table = dynamodb.Table(table_name)
-    response = table.scan(
-        FilterExpression=boto3.dynamodb.conditions.Attr('isFolder').eq(False)
-                         & boto3.dynamodb.conditions.Attr('folderId').eq(folder_id)
-    )
-    files = response.get('Items', [])
-    return files
+def get_type_from_dynamo(file_name, folder_id):
+    folder_id = folder_id.split('/')[0]
+    try:
+        response = dynamodb.Table(table_name).scan(
+            FilterExpression='begins_with(#key, :prefix)',
+            ExpressionAttributeNames={'#key': 'name'},
+            ExpressionAttributeValues={':prefix': folder_id})
+        for item in response['Items']:
+            if file_name in item['name']:
+                return item['type']
+
+    except Exception as e:
+        print(f"Error while handling types: {e}")
+

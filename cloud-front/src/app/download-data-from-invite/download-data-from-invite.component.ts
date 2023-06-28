@@ -9,6 +9,8 @@ import { FileService } from '../service/file.service';
 })
 export class DownloadDataFromInviteComponent {
   
+  selectedDestinationFolder: string = "C:/Users/Obradowski/Documents/";
+
   constructor(private router: Router, private fileService: FileService) {}
   
   ngOnInit(){
@@ -19,7 +21,13 @@ export class DownloadDataFromInviteComponent {
     console.log("IsFolder: ", isFolder); 
     console.log("Target: ", id);
     if (isFolder == "True"){
-
+      if(id != null) {
+        this.fileService.downloadFolder(id!).subscribe((res) => {
+          this.parseFolderDownload(res.files, id.split('/')[1]);
+        }, (err) => {
+          console.log(err);
+        });
+      }
     } else if (isFolder == "False") {
       this.fileService.download(id!).subscribe((res) => {
         console.log(res);
@@ -33,6 +41,26 @@ export class DownloadDataFromInviteComponent {
       alert("Easter egg xD")
     }
     this.router.navigate(['/']);
+  }
+
+  parseFolderDownload(filesAndTypes: any, root: string) {
+    for (let key in filesAndTypes) {
+      let value = filesAndTypes[key];
+      if (value) {
+        this.fileService.download(key).subscribe((res) => {
+          console.log(res);
+          const items = key!.split('/');
+          const lastItem = items[items.length - 1];
+          this._download(res.value, lastItem, this.getMimeType('.' + value))
+        }, (err) => {
+          console.log(err);
+        });
+      }
+    }
+  }
+
+  onDestinationFolderSelected(folderPath: string) {
+    this.selectedDestinationFolder = folderPath;
   }
 
   _download(res: any, fn: string, extension: string) {
