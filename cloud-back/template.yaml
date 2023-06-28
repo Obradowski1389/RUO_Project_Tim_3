@@ -18,6 +18,32 @@ Globals:
 
 Resources:
 
+  StateMachineInvite:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: StateMachineInvite
+      DefinitionUri: statemachine/family_invite.asl.json
+      DefinitionSubstitutions: 
+        SendSharingInviteArn: !GetAtt SendSharingInvite.Arn
+        CheckRespondArn: !GetAtt CheckRespond.Arn
+        NotifyAcceptedArn: !GetAtt NotifyAccepted.Arn
+        NotifyDeclinedArn: !GetAtt NotifyDeclined.Arn
+      Events:
+        StateMachineInvite:
+          Type: Api
+          Properties:
+            Path: /invite
+            Method: post
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref SendSharingInvite
+        - LambdaInvokePolicy:
+            FunctionName: !Ref CheckRespond
+        - LambdaInvokePolicy:
+            FunctionName: !Ref NotifyAccepted
+        - LambdaInvokePolicy:
+            FunctionName: !Ref NotifyDeclined
+
   SendNotification:
     Type: AWS::Serverless::Function
     Properties:
@@ -42,17 +68,55 @@ Resources:
       Runtime: python3.9
       Architectures: 
         - x86_64
-      Events:
-        SendEmail:
-          Type: Api
-          Properties:
-            Path: /invite
-            Method: post
       Policies:
         - DynamoDBWritePolicy:
             TableName: Sharing
         - DynamoDBReadPolicy:
             TableName: Sharing
+        - Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+            Resource: '*'
+  
+  CheckRespond:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: checkRespond/
+      Handler: check_respond.check_respond
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+    Policies:
+      - DynamoDBReadPolicy:
+          TableName: Sharing
+      - DynamoDBWritePolicy:
+          TableName: Sharing
+
+  NotifyAccepted:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: notifyAccepted/
+      Handler: notify_accepted.notify_accepted
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+    Policies:
+        - Statement:
+          - Effect: Allow
+            Action:
+              - ses:SendEmail
+            Resource: '*'
+
+  NotifyDeclined:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: notifyDeclined/
+      Handler: notify_declined.notify_declined
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+    Policies:
         - Statement:
           - Effect: Allow
             Action:

@@ -4,81 +4,61 @@
     "States": {
         "CreateRequest": {
             "Type": "Task",
-            "Resource": "arn:aws:lambda:eu-central-1:070424787807:function:cloud-back-SendSharingInvite-HKi2UofWMD55",
-            "Next": "WaitState"
+            "Resource": "${SendSharingInviteArn}",
+            "Next": "CheckValidity"
         },
-        "WaitState": {
-          "Type": "Wait",
-          "Seconds": 30,
-          "Next": "InvitationResponse"
+        "CheckValidity": {
+          "Type": "Choice",
+          "Choices": [
+            {
+                "Variable": "$.status",
+                "BooleanEquals": true,
+                "Next": "CheckRespond"
+            }
+
+          ],
+          "Default": "UnsucessfulInvitation"
         },
-        "InvitationResponse": {
+        "UnsucessfulInvitation": {
+            "Type":"Pass",
+            "End": true
+        }, 
+        "CheckRespond": {
+            "Type": "Task",
+            "Resource": "${CheckRespondArn}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 30,
+                    "MaxAttempts": 5,
+                    "BackoffRate": 2
+                }
+            ],
+            "Next": "CheckIfAccepted"
+        },
+        "CheckIfAccepted": {
             "Type": "Choice",
             "Choices": [
                 {
-                    "Variable": "$.foo",
+                    "Variable": "$.status",
                     "BooleanEquals": true,
-                    "Next": "AcceptedInvitation"
-                },
-                {
-                    "Variable": "$.foo",
-                    "BooleanEquals": false,
-                    "Next": "DeclinedInvitation"
+                    "Next": "NotifyAccepted"
                 }
             ],
-            "Default": "WaitState"
+            "Default": "NotifyDeclined"
         },
-        "AcceptedInvitation": {
+        "NotifyAccepted":{
             "Type": "Task",
-            "Resource": "",
-            "Next": "WaitForRegistration"
-        },
-        "DeclinedInvitation": {
-            "Type": "Task",
-            "Resource": "",
+            "Resource": "${NotifyAcceptedArn}",
             "End": true
         },
-        "WaitForRegistration": {
-          "Type": "Wait",
-          "Seconds": 30,
-          "Next": "IsRegistered"
-        },
-        "IsRegistered": {
-            "Type":"Choice",
-            "Choices": [
-                {
-                    "Variable": "$.bar",
-                    "BooleanEquals": true,
-                    "Next": "NotifySender"
-                }
-            ],
-            "Default": "WaitForRegistration"
-        },
-        "NotifySender": {
+        "NotifyDeclined": {
             "Type": "Task",
-            "Resource": "",
-            "Next": "WaitForVerification"
-        },
-        "WaitForVerification": {
-            "Type": "Wait",
-            "Seconds": 30,
-            "Next": "IsVerified"
-        },
-        "IsVerified": {
-            "Type":"Choice",
-            "Choices": [
-                {
-                    "Variable": "$.bar",
-                    "BooleanEquals": true,
-                    "Next": "ShareContent"
-                }
-            ],
-            "Default": "WaitForVerification"
-        },
-        "ShareContent": {
-            "Type": "Task",
-            "Resource": "",
+            "Resource": "${NotifyDeclinedArn}",
             "End": true
         }
+        
     }
 }
