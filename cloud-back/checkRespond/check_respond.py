@@ -4,18 +4,20 @@ import boto3
 def check_respond(event, context):
     body = event
     print(event)
-    email = body.get('targetEmail')
+    email = body['targetEmail']
     sender = body.get("senderEmail")
 
     table_name = "Sharing"
     dynamodb = boto3.resource("dynamodb")
-
-    response = dynamodb.Table(table_name).get_item(Key={'targetEmail': email})
+    tab = dynamodb.Table(table_name)
+    response = tab.get_item(Key={'targetEmail': email})
     print("Response: ", str(response))
 
-    if 'Items' in response and len(response['Items']) > 0:
-        item = response['Items'][0]
-        if item.get("status") == {"S": "ACCEPTED"} or item.get("status") == {"S": "DECLINED"}:
+    if 'Item' in response and len(response['Item']) > 0:
+        item = response['Item']
+        print(item)
+        if item.get("status") == "ACCEPTED" or item.get("status") ==  "DECLINED":
+            print(True)
             return {
                 "status": True,
                 "senderEmail": sender,
@@ -25,4 +27,4 @@ def check_respond(event, context):
             raise Exception("Invitation doesn't have a reponse")
     else:
         raise Exception("Invitation doesn't have a reponse")
-        
+    

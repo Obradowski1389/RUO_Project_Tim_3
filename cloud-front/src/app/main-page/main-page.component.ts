@@ -7,6 +7,7 @@ import { ModifyDataDialogComponent } from '../modify-data-dialog/modify-data-dia
 import { AddFriendDialogComponent } from '../add-friend-dialog/add-friend-dialog.component';
 import { CognitoService } from '../service/cognito.service';
 import { ShareDataDialogComponent } from '../share-data-dialog/share-data-dialog.component';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-main-page',
@@ -27,7 +28,8 @@ export class MainPageComponent {
   currentPath : string = (localStorage.getItem('username') ?? '') + "/"
   familyPath : string = (sessionStorage.getItem("familyUsername") ?? '') + "/";
 
-  constructor(private cognitoService: CognitoService, private router: Router, private fileService: FileService, public dialog: MatDialog) {
+  constructor(private cognitoService: CognitoService, private router: Router, private fileService: FileService, 
+    public dialog: MatDialog, private clipboard: Clipboard) {
 
     const username = sessionStorage.getItem("familyUsername");
     if(username != null){
@@ -208,12 +210,24 @@ export class MainPageComponent {
       console.log('Dialog result:', to);
       if(to == null) {
         return;
+      } else if (to == "clipboard") {
+        this.fileService.shareFF(file, "copy").subscribe((res) => {
+          console.log(res);
+          if (res.link) {
+            this.clipboard.copy(res.link);
+            alert("Link copied to clipboard")
+          }
+        }, (err) => {
+          console.log(err);
+          alert("Failed to share the file");
+        })
+      } else {
+        this.fileService.shareFF(file, to).subscribe((res) => {
+          alert("Successfully shared");
+        }, (err) => {
+          alert("Error while trying to share data.")
+        });
       }
-      this.fileService.shareFF(file, to).subscribe((res) => {
-        alert("Successfully shared");
-      }, (err) => {
-        alert("Error while trying to share data.")
-      });
     });
   }
 

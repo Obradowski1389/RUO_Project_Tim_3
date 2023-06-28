@@ -87,11 +87,11 @@ Resources:
       Runtime: python3.9
       Architectures: 
         - x86_64
-    Policies:
-      - DynamoDBReadPolicy:
-          TableName: Sharing
-      - DynamoDBWritePolicy:
-          TableName: Sharing
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Sharing
+        - DynamoDBWritePolicy:
+            TableName: Sharing
 
   NotifyAccepted:
     Type: AWS::Serverless::Function
@@ -143,6 +143,28 @@ Resources:
             Action:
               - ses:SendEmail
             Resource: '*'
+        - DynamoDBWritePolicy:
+            TableName: SharingLink
+
+  CheckIsLinkValid:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: checkValidLink/
+      Handler: check_link.check_status
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        SendEmail:
+          Type: Api
+          Properties:
+            Path: /checkIsLinkValid
+            Method: post
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: SharingLink
+        - DynamoDBReadPolicy:
+            TableName: SharingLink
 
   DownloadFolder:
     Type: AWS::Serverless::Function
