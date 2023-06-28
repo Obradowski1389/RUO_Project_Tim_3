@@ -46,6 +46,11 @@ export class ShareDataDialogComponent {
     this.cancel();
   }
 
+  copy() {
+    this.dialogClosed.emit("clipboard");
+    this.cancel();
+  }
+
   cancel() {
     this.dialogRef.close();
   }

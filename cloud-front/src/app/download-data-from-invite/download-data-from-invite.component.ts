@@ -17,30 +17,39 @@ export class DownloadDataFromInviteComponent {
     const urlParams = new URLSearchParams(window.location.search);
     const isFolder = urlParams.get('isFolder');
     const id = urlParams.get('target');  
-    const type = urlParams.get('type');  
+    const type = urlParams.get('type');
+    const dynamoID = urlParams.get('id');  
     console.log("IsFolder: ", isFolder); 
     console.log("Target: ", id);
-    if (isFolder == "True"){
-      if(id != null) {
-        this.fileService.downloadFolder(id!).subscribe((res) => {
-          this.parseFolderDownload(res.files, id.split('/')[1]);
+    console.log("IDID: ", dynamoID);
+    this.fileService.checkValidDownloadLink(dynamoID!, id!).subscribe((res) => {
+      console.log(res);
+      if (isFolder == "True"){
+        if(id != null) {
+          this.fileService.downloadFolder(id!).subscribe((res) => {
+            this.parseFolderDownload(res.files, id.split('/')[1]);
+          }, (err) => {
+            console.log(err);
+          });
+        }
+      } else if (isFolder == "False") {
+        this.fileService.download(id!).subscribe((res) => {
+          console.log(res);
+          const items = id!.split('/');
+          const lastItem = items[items.length - 1];
+          this._download(res.value, lastItem, this.getMimeType('.' + type))
         }, (err) => {
           console.log(err);
-        });
+        })
+      } else {
+        alert("Easter egg xD")
       }
-    } else if (isFolder == "False") {
-      this.fileService.download(id!).subscribe((res) => {
-        console.log(res);
-        const items = id!.split('/');
-        const lastItem = items[items.length - 1];
-        this._download(res.value, lastItem, this.getMimeType('.' + type))
-      }, (err) => {
-        console.log(err);
-      })
-    } else {
-      alert("Easter egg xD")
-    }
-    this.router.navigate(['/']);
+      this.router.navigate(['/']);
+    }, 
+    (err) => {
+      console.log(err);
+      alert("Link Is Not Valid");
+    });
   }
 
   parseFolderDownload(filesAndTypes: any, root: string) {

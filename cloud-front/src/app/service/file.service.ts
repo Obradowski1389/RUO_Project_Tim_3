@@ -50,4 +50,8 @@ export class FileService {
   downloadFolder(id: string) {
     return this.client.post<any>(environment.host + 'downloadFolder', { 'id': id });
   }
+
+  checkValidDownloadLink(id:string, name:string) {
+    return this.client.post<any>(environment.host + "checkIsLinkValid", { "id": id, "name": name});
+  }
 }
