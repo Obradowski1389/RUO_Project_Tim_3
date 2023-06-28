@@ -87,11 +87,11 @@ Resources:
       Runtime: python3.9
       Architectures: 
         - x86_64
-    Policies:
-      - DynamoDBReadPolicy:
-          TableName: Sharing
-      - DynamoDBWritePolicy:
-          TableName: Sharing
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Sharing
+        - DynamoDBWritePolicy:
+            TableName: Sharing
 
   NotifyAccepted:
     Type: AWS::Serverless::Function
