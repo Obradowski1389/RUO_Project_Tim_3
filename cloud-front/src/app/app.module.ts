@@ -21,6 +21,7 @@ import { RespondDialogComponent } from './respond-dialog/respond-dialog.componen
 import { ShareDataDialogComponent } from './share-data-dialog/share-data-dialog.component';
 import { DownloadDataFromInviteComponent } from './download-data-from-invite/download-data-from-invite.component';
 import { InvitationsComponent } from './invitations/invitations.component';
+import { InvalidateLinkComponent } from './invalidate-link/invalidate-link.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { InvitationsComponent } from './invitations/invitations.component';
     RespondDialogComponent,
     ShareDataDialogComponent,
     DownloadDataFromInviteComponent,
-    InvitationsComponent
+    InvitationsComponent,
+    InvalidateLinkComponent
   ],
   imports: [
     BrowserModule,

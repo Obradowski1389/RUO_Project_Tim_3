@@ -8,6 +8,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { AuthGuardService } from './guard/auth.guard.service';
 import { FamilySignUpComponent } from './family-sign-up/family-sign-up.component';
 import { DownloadDataFromInviteComponent } from './download-data-from-invite/download-data-from-invite.component';
+import { InvalidateLinkComponent } from './invalidate-link/invalidate-link.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'home', component:MainPageComponent, canActivate: [AuthGuardService]},
   {path: "familyRegistration", component: FamilySignUpComponent},
   {path: 'claimData', component: DownloadDataFromInviteComponent},
+  {path: 'invalidateLink', component: InvalidateLinkComponent},
   {path: '', pathMatch: 'full', redirectTo:'login'}
 ];
 
