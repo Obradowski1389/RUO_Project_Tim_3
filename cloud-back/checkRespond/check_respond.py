@@ -13,13 +13,20 @@ def check_respond(event, context):
     response = tab.get_item(Key={'targetEmail': email})
     print("Response: ", str(response))
 
-    if 'Item' in response and len(response['Item']) > 0:
+    if 'Item' in response:
         item = response['Item']
         print(item)
-        if item.get("status") == "ACCEPTED" or item.get("status") ==  "DECLINED":
+        if item.get("status") == "ACCEPTED":
             print(True)
             return {
                 "status": True,
+                "senderEmail": sender,
+                "targetEmail": email
+            }
+        elif item.get("status") ==  "DECLINED":
+            print(False)
+            return {
+                "status": False,
                 "senderEmail": sender,
                 "targetEmail": email
             }
