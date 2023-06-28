@@ -44,6 +44,26 @@ Resources:
         - LambdaInvokePolicy:
             FunctionName: !Ref NotifyDeclined
 
+  InvalidateDownloadLink:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: invalidateLink/
+      Handler: invalidate_download_link.invalidate_download_link
+      Runtime: python3.9
+      Architectures: 
+        - x86_64
+      Events:
+        SendEmail:
+          Type: Api
+          Properties:
+            Path: /invalidateLink
+            Method: post
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: SharingLink 
+        - DynamoDBWritePolicy:
+            TableName: SharingLink
+
   SendNotification:
     Type: AWS::Serverless::Function
     Properties:
@@ -101,12 +121,12 @@ Resources:
       Runtime: python3.9
       Architectures: 
         - x86_64
-    Policies:
-        - Statement:
-          - Effect: Allow
-            Action:
-              - ses:SendEmail
-            Resource: '*'
+      Policies:
+          - Statement:
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+              Resource: '*'
 
   NotifyDeclined:
     Type: AWS::Serverless::Function
@@ -116,12 +136,12 @@ Resources:
       Runtime: python3.9
       Architectures: 
         - x86_64
-    Policies:
-        - Statement:
-          - Effect: Allow
-            Action:
-              - ses:SendEmail
-            Resource: '*'
+      Policies:
+          - Statement:
+            - Effect: Allow
+              Action:
+                - ses:SendEmail
+              Resource: '*'
 
   SendSharingNotification:
     Type: AWS::Serverless::Function

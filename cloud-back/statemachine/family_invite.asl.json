@@ -47,7 +47,7 @@
                     "Next": "NotifyAccepted"
                 },{
                     "Variable": "$.status",
-                    "BooleanEquals":false,
+                    "BooleanEquals": false,
                     "Next": "NotifyDeclined"
                 }
             ],
